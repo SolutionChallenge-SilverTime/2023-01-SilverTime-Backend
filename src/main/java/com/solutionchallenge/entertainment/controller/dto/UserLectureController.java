@@ -1,12 +1,15 @@
 package com.solutionchallenge.entertainment.controller.dto;
 
+import com.solutionchallenge.entertainment.controller.dto.request.ReviewRequest;
 import com.solutionchallenge.entertainment.controller.dto.response.BriefLectureResponse;
 import com.solutionchallenge.entertainment.controller.dto.response.LectureInfoResponse;
 import com.solutionchallenge.entertainment.service.UserLectureService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -36,7 +39,7 @@ public class UserLectureController {
     @GetMapping("/main")
     public ResponseEntity<?> showMainLecture(@RequestParam Long userId){
 
-        List<BriefLectureResponse> reponses = userLectureService.showAllLecture("all", "modifiedDate", userId);
+        List<BriefLectureResponse> reponses = userLectureService.showAllLecture("all", "new", userId);
 
         return ResponseEntity.ok(reponses);
     }
@@ -63,6 +66,14 @@ public class UserLectureController {
         userLectureService.cancelLecture(userId, lectureId);
 
         return ResponseEntity.ok("Lecture Canceled");
+    }
+
+    @PostMapping(value="/review", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<?> writeReview(@Valid @RequestBody ReviewRequest request){
+
+        userLectureService.writeReview(request.toServiceDto());
+
+        return ResponseEntity.ok("Write Review Succeed");
     }
 /*
     @GetMapping("/search")

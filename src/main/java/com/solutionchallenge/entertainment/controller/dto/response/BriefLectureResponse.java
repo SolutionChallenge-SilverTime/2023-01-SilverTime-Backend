@@ -25,8 +25,9 @@ public class BriefLectureResponse {
     private int likeCount;
     private int maxPeople;
     private int presentPeople;
+    private double distance;
 
-    public static BriefLectureResponse getNewInstance(Lecture lecture){
+    public static BriefLectureResponse getNewInstance(Lecture lecture, double distance){
         return BriefLectureResponse.builder()
                 .imageUrl(lecture.getRepresentImageUrl())
                 .title(lecture.getTitle())
@@ -43,6 +44,7 @@ public class BriefLectureResponse {
                 .likeCount(lecture.getLikeCount())
                 .maxPeople(lecture.getMaxRegistrant())
                 .presentPeople(lecture.getPresentRegistrant())
+                .distance(distance)
                 .build();
     }
 

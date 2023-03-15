@@ -12,16 +12,22 @@ import com.solutionchallenge.entertainment.domain.lecture.Lecture;
 import com.solutionchallenge.entertainment.domain.lecture.LectureRepository;
 import com.solutionchallenge.entertainment.domain.likeLecture.LikeLecture;
 import com.solutionchallenge.entertainment.domain.likeLecture.LikeLectureRespository;
+import com.solutionchallenge.entertainment.domain.registration.Registration;
 import com.solutionchallenge.entertainment.domain.registration.RegistrationRepository;
+import com.solutionchallenge.entertainment.domain.review.ReivewRepository;
+import com.solutionchallenge.entertainment.domain.review.Review;
 import com.solutionchallenge.entertainment.domain.senior.Senior;
 import com.solutionchallenge.entertainment.domain.senior.SeniorRepository;
 import com.solutionchallenge.entertainment.domain.tutor.Tutor;
+import com.solutionchallenge.entertainment.domain.tutor.TutorRepository;
 import com.solutionchallenge.entertainment.service.dto.LectureDistance;
+import com.solutionchallenge.entertainment.service.dto.ReviewDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -36,11 +42,11 @@ public class UserLectureService {
     private final SeniorRepository seniorRepository;
     private final ApplyRepository applyRepository;
     private final LectureRepository lectureRepository;
-    //private final TutorRepository tutorRepository;
+    private final TutorRepository tutorRepository;
     private final RegistrationRepository registrationRepository;
     private final InstroductionImagesRepository instroductionImagesRepository;
     private final CurriculumRepository curriculumRepository;
-    //private final ReivewRepository reivewRepository;
+    private final ReivewRepository reivewRepository;
     private final LikeLectureRespository likeLectureRespository;
 
     public void applyLecture(Long userId, Long lectureId){
@@ -88,29 +94,61 @@ public class UserLectureService {
 
         // category : all / health / education / hobby / social
         if(category.equals("all")){
-            lectures = lectureRepository.findAll(Sort.by(Sort.Direction.DESC, sortColumn));
-            //lectures = lectureRepository.findAll();
+            lectures = lectureRepository.findAll();
         }
         else{
-            lectures = lectureRepository.findAllByCategory(category, Sort.by(Sort.Direction.DESC, sortColumn));
+            lectures = lectureRepository.findAllByCategory(category);
         }
 
-        List<LectureDistance> finalLecture = lectures
-                .stream()
-                .map(lecture -> LectureDistance.builder()
-                        .inputlecture(lecture)
-                        .userLatitude(senior.getLatitude())
-                        .userLongitude(senior.getLongitude())
-                        .distance(calculateDistance(lecture.getLatitude(), lecture.getLongitude(), senior.getLatitude(), senior.getLongitude()))
-                        .build())
-                .filter(lectureDistance -> lectureDistance.getDistance() <= RADIUS_KM)
-                .sorted(Comparator.comparing(LectureDistance::getDistance))
-                .collect(Collectors.toList());
+        List<LectureDistance> finalLecture = new ArrayList<>();
+        if(sort.equals("new")){
+            finalLecture = lectures.stream()
+                    .map(lecture -> LectureDistance.builder()
+                            .inputlecture(lecture)
+                            .userLatitude(senior.getLatitude())
+                            .userLongitude(senior.getLongitude())
+                            .distance(calculateDistance(lecture.getLatitude(), lecture.getLongitude(), senior.getLatitude(), senior.getLongitude()))
+                            .likeCount(lecture.getLikeCount())
+                            .modifiedDate(lecture.getModifiedDate())
+                            .build())
+                    .filter(lectureDistance -> lectureDistance.getDistance() <= RADIUS_KM)
+                    .sorted(Comparator.comparing(LectureDistance::getModifiedDate).reversed())
+                    .collect(Collectors.toList());
+        }
+        else if(sort.equals("distance")){
+            finalLecture = lectures.stream()
+                                    .map(lecture -> LectureDistance.builder()
+                                            .inputlecture(lecture)
+                                            .userLatitude(senior.getLatitude())
+                                            .userLongitude(senior.getLongitude())
+                                            .distance(calculateDistance(lecture.getLatitude(), lecture.getLongitude(), senior.getLatitude(), senior.getLongitude()))
+                                            .likeCount(lecture.getLikeCount())
+                                            .modifiedDate(lecture.getModifiedDate())
+                                            .build())
+                                    .filter(lectureDistance -> lectureDistance.getDistance() <= RADIUS_KM)
+                                    .sorted(Comparator.comparing(LectureDistance::getDistance))
+                                    .collect(Collectors.toList());
+        }
+        else if(sort.equals("like")){
+            finalLecture = lectures.stream()
+                    .map(lecture -> LectureDistance.builder()
+                            .inputlecture(lecture)
+                            .userLatitude(senior.getLatitude())
+                            .userLongitude(senior.getLongitude())
+                            .distance(calculateDistance(lecture.getLatitude(), lecture.getLongitude(), senior.getLatitude(), senior.getLongitude()))
+                            .likeCount(lecture.getLikeCount())
+                            .modifiedDate(lecture.getModifiedDate())
+                            .build())
+                    .filter(lectureDistance -> lectureDistance.getDistance() <= RADIUS_KM)
+                    .sorted(Comparator.comparing(LectureDistance::getLikeCount).reversed())
+                    .collect(Collectors.toList());
+        }
 
         List<BriefLectureResponse> responses = new ArrayList<>();
         for(LectureDistance element : finalLecture){
-            responses.add(BriefLectureResponse.getNewInstance(element.getInputlecture()));
+            responses.add(BriefLectureResponse.getNewInstance(element.getInputlecture(),Math.round(element.getDistance())));
         }
+
         return responses;
         // lecture 테이블에 distance가 없어서 거리순 정렬이 안됨
 //        return lectures
@@ -140,20 +178,22 @@ public class UserLectureService {
         if(state.equals("interest")){
             List<LikeLecture> likeLectures = likeLectureRespository.findAllBySenior(senior).orElseThrow(()-> new IllegalArgumentException("UserId is wrong"));
             for(LikeLecture element : likeLectures){
-                responses.add(BriefLectureResponse.getNewInstance(element.getLecture()));
+                double distance = calculateDistance(senior.getLatitude(),senior.getLongitude(),element.getLecture().getLatitude(),element.getLecture().getLongitude());
+                responses.add(BriefLectureResponse.getNewInstance(element.getLecture(),Math.round(distance)));
             }
         }
         else{
             List<Apply> applies = applyRepository.findAllBySenior(senior).orElseThrow(()-> new IllegalArgumentException("UserId is wrong"));
             for(Apply element : applies){
+                double distance = calculateDistance(senior.getLatitude(),senior.getLongitude(),element.getLecture().getLatitude(),element.getLecture().getLongitude());
                 if(element.getState().equals("completed") && state.equals("completed")){
-                    responses.add(BriefLectureResponse.getNewInstance(element.getLecture()));
+                    responses.add(BriefLectureResponse.getNewInstance(element.getLecture(),Math.round(distance)));
                 }
                 else if(element.getState().equals("applied") && state.equals("applied")){
-                    responses.add(BriefLectureResponse.getNewInstance(element.getLecture()));
+                    responses.add(BriefLectureResponse.getNewInstance(element.getLecture(),Math.round(distance)));
                 }
                 else if(element.getState().equals("in-progress") && state.equals("in-progress")){
-                    responses.add(BriefLectureResponse.getNewInstance(element.getLecture()));
+                    responses.add(BriefLectureResponse.getNewInstance(element.getLecture(),Math.round(distance)));
                 }
             }
         }
@@ -171,4 +211,13 @@ public class UserLectureService {
         return earthRadius * Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2));
     }
 
+    public void writeReview(ReviewDTO reviewDTO) {
+
+        Senior senior = seniorRepository.findById(reviewDTO.getSeniorId()).orElseThrow(()-> new IllegalArgumentException("Senior doesn't exist"));
+        Lecture lecture = lectureRepository.findById(reviewDTO.getLectureId()).orElseThrow(()-> new IllegalArgumentException("Lecture doesn't exist"));
+        Registration registration = registrationRepository.findByLecture(lecture).orElseThrow(()-> new IllegalArgumentException("Registration doesn't exist"));
+        Tutor tutor = tutorRepository.findById(registration.getTutor().getTutorId()).orElseThrow(()-> new IllegalArgumentException("Tutor doesn't exist"));
+
+        reivewRepository.save(Review.getNewInstance(senior,tutor,reviewDTO.getContent()));
+    }
 }

@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -17,5 +19,7 @@ public class LectureDistance {
     private double userLongitude;
 
     private double distance;
+    private int likeCount;
+    private LocalDateTime modifiedDate;
 
 }

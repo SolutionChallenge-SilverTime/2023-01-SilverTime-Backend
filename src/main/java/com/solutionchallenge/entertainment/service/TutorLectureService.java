@@ -27,6 +27,7 @@ public class TutorLectureService {
 
     private final KakaoAddressSearchService kakaoAddressSearchService;
     private final KakaoUriBuilderService kakaoUriBuilderService;
+    private final UserLectureService userLectureService;
 
     private final LectureRepository lectureRepository;
     private final CurriculumRepository curriculumRepository;
@@ -120,17 +121,18 @@ public class TutorLectureService {
 
         // state : registered: 모집중 , completed: 모집완료, in-progress:진행중, finished: 진행완료
         for(Registration element : registrations){
+
             if(element.getState().equals("registered") && state.equals("registered")){
-                responses.add(BriefLectureResponse.getNewInstance(element.getLecture()));
+                responses.add(BriefLectureResponse.getNewInstance(element.getLecture(),0));
             }
             else if(element.getState().equals("completed") && state.equals("completed")){
-                responses.add(BriefLectureResponse.getNewInstance(element.getLecture()));
+                responses.add(BriefLectureResponse.getNewInstance(element.getLecture(),0));
             }
             else if(element.getState().equals("in-progress") && state.equals("in-progress")){
-                responses.add(BriefLectureResponse.getNewInstance(element.getLecture()));
+                responses.add(BriefLectureResponse.getNewInstance(element.getLecture(),0));
             }
             else if(element.getState().equals("finished") && state.equals("finished")){
-                responses.add(BriefLectureResponse.getNewInstance(element.getLecture()));
+                responses.add(BriefLectureResponse.getNewInstance(element.getLecture(),0));
             }
         }
 

@@ -62,9 +62,6 @@ public class Lecture extends BaseTimeEntity {
     List<Curriculum> curriculums = new ArrayList<>();
 
     @OneToMany(mappedBy = "lecture", orphanRemoval = true)
-    List<Review> reviews = new ArrayList<>();
-
-    @OneToMany(mappedBy = "lecture", orphanRemoval = true)
     List<Apply> applies = new ArrayList<>();
 
     @OneToMany(mappedBy = "lecture",orphanRemoval = true)
