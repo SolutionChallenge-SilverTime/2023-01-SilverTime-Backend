@@ -28,9 +28,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -39,6 +37,7 @@ import java.util.stream.Collectors;
 public class UserLectureService {
 
     private static final double RADIUS_KM = 10.0;
+    private static final int MAX_REVIEW = 10;
     private final SeniorRepository seniorRepository;
     private final ApplyRepository applyRepository;
     private final LectureRepository lectureRepository;
@@ -65,10 +64,23 @@ public class UserLectureService {
         Tutor tutor = registrationRepository.findByLecture(lecture).orElseThrow(()-> new IllegalArgumentException("Tutor doesn't exist")).getTutor();
         List<Curriculum> curriculums = curriculumRepository.findAllByLecture(lecture).orElseThrow(()-> new IllegalArgumentException("Curriculum doesn't exist"));
         List<InstroductionImages> introImages = instroductionImagesRepository.findAllByLecture(lecture).orElseThrow(()-> new IllegalArgumentException("Images doesn't exist"));
-        //List<Review> reviews = reivewRepository.findBy()
+        List<Review> reviews = reivewRepository.findAllByTutor(tutor)
+                                                .orElseThrow(()-> new IllegalArgumentException("Review doesn't exist"))
+                                                .stream()
+                                                .sorted(Comparator.comparing(Review::getCreateDate).reversed())
+                                                .limit(MAX_REVIEW)
+                                                .collect(Collectors.toList());
+
+        List<Map<String,String>> reviewResult = new ArrayList<Map<String,String>>();
         List<String> lectureIntroImagesUrl = new ArrayList<>();
         List<String> curriculumContents = new ArrayList<>();
         List<String> curriculumImagesUrl = new ArrayList<>();
+
+        for(Review element : reviews){
+            Map<String,String> temp = new HashMap<>();
+            temp.put(element.getSenior().getName(),element.getContent());
+            reviewResult.add(temp);
+        }
         for(Curriculum element : curriculums ){
             curriculumContents.add(element.getContent());
             curriculumImagesUrl.add(element.getImageUrl());
@@ -76,8 +88,7 @@ public class UserLectureService {
         for(InstroductionImages element : introImages){
             lectureIntroImagesUrl.add(element.getImageUrl());
         }
-
-        LectureInfoResponse response = LectureInfoResponse.getNewInstance(lecture, tutor, curriculumContents, curriculumImagesUrl, lectureIntroImagesUrl);
+        LectureInfoResponse response = LectureInfoResponse.getNewInstance(lecture, tutor, curriculumContents, curriculumImagesUrl, lectureIntroImagesUrl,reviewResult);
 
         return response;
     }
@@ -85,10 +96,6 @@ public class UserLectureService {
     public List<BriefLectureResponse> showAllLecture(String category, String sort, Long userId) {
 
         Senior senior = seniorRepository.findById(userId).orElseThrow(()-> new IllegalArgumentException("Senior doesn't exist"));
-
-        String sortColumn ="modifiedDate";
-        if(sort.equals("like")) sortColumn = "likeCount";
-        //else if(sort.equals("distance")) sortKey = "distance";
 
         List<Lecture> lectures;
 

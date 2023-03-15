@@ -2,9 +2,11 @@ package com.solutionchallenge.entertainment.controller.dto.response;
 
 import com.solutionchallenge.entertainment.domain.curriculum.Curriculum;
 import com.solutionchallenge.entertainment.domain.lecture.Lecture;
+import com.solutionchallenge.entertainment.domain.review.Review;
 import com.solutionchallenge.entertainment.domain.tutor.Tutor;
 import lombok.*;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +32,8 @@ public class LectureInfoResponse {
     private Date tutorBirth;
     private String profileUrl;
     private String tutorIntro;
-    //rivate List<Map<String,String>> reviews;
+    private List<Map<String,String>> reviews;
+    //private List<Review> reviewTest;
 
     private Date startDate;
     private Date endDate;
@@ -38,7 +41,7 @@ public class LectureInfoResponse {
     private String activityTime;
 
 
-    public static LectureInfoResponse getNewInstance(Lecture lecture, Tutor tutor, List<String> curriculumContents, List<String> curriculumImagesUrl, List<String> lectureIntroImagesUrl) {
+    public static LectureInfoResponse getNewInstance(Lecture lecture, Tutor tutor, List<String> curriculumContents, List<String> curriculumImagesUrl, List<String> lectureIntroImagesUrl, List<Map<String,String>> reviews) {
 
         return LectureInfoResponse.builder()
                 .tutorName(tutor.getName())
@@ -55,11 +58,11 @@ public class LectureInfoResponse {
                 .tutorBirth(tutor.getBirth())
                 .profileUrl(tutor.getProfilUrl())
                 .tutorIntro(tutor.getIntroduction())
-                //.reviews()
                 .startDate(lecture.getStartDate())
                 .endDate(lecture.getEndDate())
-                .registerDate(java.sql.Timestamp.valueOf(lecture.getCreateDate()))
+                .registerDate(Timestamp.valueOf(lecture.getCreateDate()))
                 .activityTime(lecture.getActivityTime())
+                .reviews(reviews)
                 .build();
     }
 }

@@ -75,11 +75,11 @@ public class UserLectureController {
 
         return ResponseEntity.ok("Write Review Succeed");
     }
-/*
+
     @GetMapping("/search")
     public ResponseEntity<?> searchLecture(){
 
         return ResponseEntity.ok("");
     }
-*/
+
 }
