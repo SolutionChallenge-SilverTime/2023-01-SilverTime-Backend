@@ -14,4 +14,6 @@ public interface ApplyRepository extends JpaRepository<Apply,Long> {
     void deleteBySeniorAndLecture(Senior senior, Lecture lecture);
 
     Optional<List<Apply>> findAllBySenior(Senior senior);
+
+    Optional<Apply> findBySeniorAndLecture(Senior senior, Lecture lecture);
 }

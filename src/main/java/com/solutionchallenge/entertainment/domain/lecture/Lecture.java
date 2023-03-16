@@ -96,4 +96,8 @@ public class Lecture extends BaseTimeEntity {
                 .longitude(longitude)
                 .build();
     }
+
+    public void updateRegistrant(int num) {
+        this.presentRegistrant = num;
+    }
 }

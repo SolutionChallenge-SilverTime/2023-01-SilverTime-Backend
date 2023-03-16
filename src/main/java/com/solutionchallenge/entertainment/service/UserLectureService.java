@@ -52,7 +52,11 @@ public class UserLectureService {
 
         Senior user = seniorRepository.findById(userId).orElseThrow(()-> new IllegalArgumentException("User doesn't exist"));
         Lecture lecture = lectureRepository.findById(lectureId).orElseThrow(()-> new IllegalArgumentException("Lecture doesn't exist"));
-
+        if(lecture.getPresentRegistrant() < lecture.getMaxRegistrant()){
+            lecture.updateRegistrant(lecture.getPresentRegistrant()+1);
+            lectureRepository.save(lecture);
+        }
+        else throw new IllegalArgumentException("This lecture is full");
         Apply apply = Apply.getNewInstance(user, lecture, "applied");
 
         applyRepository.save(apply);
@@ -185,14 +189,20 @@ public class UserLectureService {
         Senior senior = seniorRepository.findById(userId).orElseThrow(()-> new IllegalArgumentException("Senior doesn't exist"));
         Lecture lecture = lectureRepository.findById(lectureId).orElseThrow(()-> new IllegalArgumentException("Senior doesn't exist"));
 
-        applyRepository.deleteBySeniorAndLecture(senior, lecture);
+        Apply apply = applyRepository.findBySeniorAndLecture(senior, lecture).orElseThrow(()-> new IllegalArgumentException("Apply doesn't exist"));
+        if(lecture.getPresentRegistrant() > 0 && apply.getState().equals("applied")){
+            lecture.updateRegistrant(lecture.getPresentRegistrant()-1);
+            lectureRepository.save(lecture);
+            applyRepository.deleteBySeniorAndLecture(senior, lecture);
+        }
+        else throw new IllegalArgumentException("There is no applicant");
 
     }
 
     // 통과
     public List<BriefLectureResponse> myLecture(String state, Long userId) {
 
-        // state : appied: 수강 전 , completed: 수강 완료, in-progress:수강 중, interest: 관심 있는
+        // state : applied: 수강 전 , completed: 수강 완료, in-progress:수강 중, interest: 관심 있는
 
         List<BriefLectureResponse> responses = new ArrayList<>();
         Senior senior = seniorRepository.findById(userId).orElseThrow(()-> new IllegalArgumentException("Senior doesn't exist"));
