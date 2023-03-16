@@ -1,5 +1,6 @@
 package com.solutionchallenge.entertainment.service;
 
+import com.solutionchallenge.entertainment.controller.dto.response.UserResponse;
 import com.solutionchallenge.entertainment.domain.guardian.Guardian;
 import com.solutionchallenge.entertainment.domain.guardian.GurdianRepository;
 import com.solutionchallenge.entertainment.domain.senior.Senior;
@@ -20,13 +21,15 @@ public class GuardianService {
     private final ImageHandler imageHandler;
     private final SeniorService seniorService;
     private final InterestService interestService;
+    private final FirebaseService firebaseService;
 
     public void signUp(GuardianDTO guardianDTO, MultipartFile profilImage, SeniorDTO seniorDTO, InterestDTO interestDTO) throws Exception{
         validateDuplicate(guardianDTO);
         Senior getSenior = setSenior(guardianDTO.getSeniorNickname(), seniorDTO);
         interestService.create(getSenior,interestDTO.getContents());
         Guardian guardian = Guardian.newInstance(guardianDTO, getSenior);
-        String imageUrl = imageHandler.pareseFileInfo(profilImage, guardianDTO.getNickName());
+//        String imageUrl = imageHandler.pareseFileInfo(profilImage, guardianDTO.getNickName());
+        String imageUrl = firebaseService.uploadFiles(profilImage);
         guardian.updateProfile(imageUrl);
         gurdianRepository.save(guardian);
     }
@@ -55,4 +58,10 @@ public class GuardianService {
     }
 
 
+    public UserResponse signIn(GuardianDTO guardianDTO) {
+        Guardian guardian = gurdianRepository.findByNickNameAndPassword(guardianDTO.getNickName(), guardianDTO.getPassword())
+                .orElseThrow(() -> new IllegalArgumentException("틀린 로그인 정보입니다"));
+
+        return UserResponse.of(guardian.getNickName(), guardian.getPassword(), guardian.getGuardianId());
+    }
 }

@@ -1,5 +1,6 @@
 package com.solutionchallenge.entertainment.service;
 
+import com.solutionchallenge.entertainment.controller.dto.response.UserResponse;
 import com.solutionchallenge.entertainment.domain.senior.Senior;
 import com.solutionchallenge.entertainment.domain.senior.SeniorRepository;
 import com.solutionchallenge.entertainment.service.dto.InterestDTO;
@@ -16,11 +17,13 @@ public class SeniorService {
     private final SeniorRepository seniorRepository;
     private final ImageHandler imageHandler;
     private final InterestService interestService;
+    private final FirebaseService firebaseService;
     public void signUp(SeniorDTO seniorDTO, MultipartFile profileImage, InterestDTO interestDTO) throws Exception{
         validateNickNameDuplicate(seniorDTO.getNickName());
         validateEmailDuplicate(seniorDTO.getEmail());
         Senior getSenior = Senior.getNewInstance(seniorDTO);
-        String profileUrl = imageHandler.pareseFileInfo(profileImage,getSenior.getNickName());
+//        String profileUrl = imageHandler.pareseFileInfo(profileImage,getSenior.getNickName());
+        String profileUrl = firebaseService.uploadFiles(profileImage);
         getSenior.saveProfilUrl(profileUrl);
         Senior savedSenior = seniorRepository.save(getSenior);
         //관심사 등록
@@ -65,5 +68,11 @@ public class SeniorService {
     }
     public Senior findBySeniorId(Long seniorId){
         return seniorRepository.findBySeniorId(seniorId).orElseThrow(() -> new IllegalArgumentException("없는 id 유저"));
+    }
+
+    public UserResponse signIn(SeniorDTO seniorDTO) {
+        Senior senior = seniorRepository.findByNickNameAndPassword(seniorDTO.getNickName(), seniorDTO.getPassword())
+                .orElseThrow(()-> new IllegalArgumentException("로그인 정보가 틀렸습니다"));
+        return UserResponse.of(senior.getNickName(), senior.getPassword(), senior.getSeniorId());
     }
 }

@@ -18,6 +18,9 @@ public class SignificantResponse {
     private LocalDateTime createDate;
     private String title;
     private String content;
+    private Long significantId;
+    private String tutorProfileUrl;
+    private String guardianProfileUrl;
 
     public SignificantResponse(Significant significant) {
         this.tutorName = significant.getTutor().getName();
@@ -27,5 +30,8 @@ public class SignificantResponse {
         this.lectureName = significant.getLectureName();
         this.title = significant.getTitle();
         this.content = significant.getContent();
+        this.significantId = significant.getSignificantId();
+        this.tutorProfileUrl = significant.getTutor().getProfileUrl();
+        this.guardianProfileUrl = significant.getGuardian().getProfileUrl();
     }
 }

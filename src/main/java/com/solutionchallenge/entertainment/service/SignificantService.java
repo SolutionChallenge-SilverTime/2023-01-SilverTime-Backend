@@ -2,6 +2,7 @@ package com.solutionchallenge.entertainment.service;
 
 import com.solutionchallenge.entertainment.controller.dto.response.SignificantResponse;
 import com.solutionchallenge.entertainment.domain.guardian.Guardian;
+import com.solutionchallenge.entertainment.domain.guardian.GurdianRepository;
 import com.solutionchallenge.entertainment.domain.significant.Significant;
 import com.solutionchallenge.entertainment.domain.significant.SignificantRepository;
 import com.solutionchallenge.entertainment.domain.tutor.Tutor;
@@ -30,6 +31,13 @@ public class SignificantService {
     public List<SignificantResponse> tutorSendingList(String nickName) {
         Tutor tutor = tutorService.findByNickName(nickName);
         List<Significant> significants = significantRepository.findByTutor(tutor);
+        List<SignificantResponse> significantResponses = significants.stream().map(SignificantResponse::new).collect(Collectors.toList());
+        return significantResponses;
+    }
+
+    public List<SignificantResponse> guardianReceiveList(String nickName) {
+        Guardian guardian = guardianService.findByNickName(nickName);
+        List<Significant> significants = significantRepository.findByGuardian(guardian);
         List<SignificantResponse> significantResponses = significants.stream().map(SignificantResponse::new).collect(Collectors.toList());
         return significantResponses;
     }

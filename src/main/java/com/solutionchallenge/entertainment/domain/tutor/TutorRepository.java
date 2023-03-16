@@ -8,4 +8,6 @@ public interface TutorRepository extends JpaRepository<Tutor,Long> {
     Optional<Tutor> findByNickName(String nickName);
 
     Optional<Tutor> findByEmail(String email);
+
+    Optional<Tutor> findByNickNameAndPassword(String nickName, String password);
 }

@@ -1,5 +1,6 @@
 package com.solutionchallenge.entertainment.service;
 
+import com.solutionchallenge.entertainment.controller.dto.response.UserResponse;
 import com.solutionchallenge.entertainment.domain.guardian.GurdianRepository;
 import com.solutionchallenge.entertainment.domain.senior.SeniorRepository;
 import com.solutionchallenge.entertainment.domain.tutor.Tutor;
@@ -18,12 +19,14 @@ public class TutorService {
     private final SeniorRepository seniorRepository;
     private final GurdianRepository gurdianRepository;
     private final ImageHandler imageHandler;
+    private final FirebaseService firebaseService;
 
 
     public void signUp(TutorDTO tutorDTO, MultipartFile profileImage) throws Exception {
         validDuplicate(tutorDTO);
         Tutor tutor = Tutor.getNewInstance(tutorDTO);
-        String profileUrl = imageHandler.pareseFileInfo(profileImage, tutorDTO.getNickName());
+//        String profileUrl = imageHandler.pareseFileInfo(profileImage, tutorDTO.getNickName());
+        String profileUrl = firebaseService.uploadFiles(profileImage);
         tutor.updateProfileUrl(profileUrl);
         tutorRepository.save(tutor);
 
@@ -55,4 +58,11 @@ public class TutorService {
         return tutorRepository.findByNickName(nickName)
                 .orElseThrow(() -> new IllegalArgumentException(nickName + " 는 없는 닉네임입니다"));
     }
+
+    public UserResponse signIn(TutorDTO tutorDTO) {
+        Tutor tutor = tutorRepository.findByNickNameAndPassword(tutorDTO.getNickName(), tutorDTO.getPassword())
+                .orElseThrow(() -> new IllegalArgumentException("로그인 정보가 틀렸습니다"));
+        return UserResponse.of(tutor.getNickName(), tutor.getPassword(), tutor.getTutorId());
+    }
+
 }

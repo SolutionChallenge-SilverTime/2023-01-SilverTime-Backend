@@ -8,4 +8,6 @@ public interface GurdianRepository extends JpaRepository<Guardian,Long> {
     Optional<Guardian> findByEmail(String email);
 
     Optional<Guardian> findByNickName(String nickName);
+
+    Optional<Guardian> findByNickNameAndPassword(String nickName, String password);
 }

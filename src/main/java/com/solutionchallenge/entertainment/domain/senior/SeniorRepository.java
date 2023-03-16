@@ -9,4 +9,6 @@ public interface SeniorRepository extends JpaRepository<Senior,Long> {
 
     Optional<Senior> findBySeniorId(Long seniorId);
     Optional<Senior> findByNickName(String nickName);
+
+    Optional<Senior> findByNickNameAndPassword(String nickName, String password);
 }

@@ -34,4 +34,10 @@ public class SeniorDTO {
                 .email(email)
                 .birth(birth).build();
     }
+
+    public static SeniorDTO of(String nickName, String password) {
+        return SeniorDTO.builder()
+                .nickName(nickName)
+                .password(password).build();
+    }
 }
