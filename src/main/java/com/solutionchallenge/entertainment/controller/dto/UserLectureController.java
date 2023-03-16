@@ -77,9 +77,11 @@ public class UserLectureController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> searchLecture(){
+    public ResponseEntity<?> searchLecture(@RequestParam String query, @RequestParam Long userId){
 
-        return ResponseEntity.ok("");
+        List<BriefLectureResponse> responses = userLectureService.showAllLecture(query,"new", userId);
+
+        return ResponseEntity.ok(responses);
     }
 
 }
