@@ -70,6 +70,9 @@ public class Lecture extends BaseTimeEntity {
     @OneToMany(mappedBy = "lecture",orphanRemoval = true)
     List<LikeLecture> likeLectures = new ArrayList<>();
 
+    @OneToMany(mappedBy = "lecture", orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
+
     public static Lecture getNewInstance(TutorLectureDTO tutorLectureDTO, double latitude, double longitude){
         return Lecture.builder()
                 .instroduction(tutorLectureDTO.getInstroduction())

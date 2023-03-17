@@ -1,6 +1,7 @@
 package com.solutionchallenge.entertainment.domain.review;
 
 import com.solutionchallenge.entertainment.domain.BaseTimeEntity;
+import com.solutionchallenge.entertainment.domain.lecture.Lecture;
 import com.solutionchallenge.entertainment.domain.senior.Senior;
 import com.solutionchallenge.entertainment.domain.tutor.Tutor;
 import lombok.AllArgsConstructor;
@@ -21,20 +22,22 @@ public class Review extends BaseTimeEntity{
 
     @Column
     private String content;
+    private double score;
 
     @ManyToOne
     @JoinColumn(name="senior_Id")
     private Senior senior;
 
     @ManyToOne
-    @JoinColumn(name="tutor_Id")
-    private Tutor tutor;
+    @JoinColumn(name="lecture_Id")
+    private Lecture lecture;
 
-    public static Review getNewInstance(Senior senior, Tutor tutor, String content){
+    public static Review getNewInstance(Senior senior, Lecture lecture, String content, double score){
         return Review.builder()
                 .senior(senior)
-                .tutor(tutor)
+                .lecture(lecture)
                 .content(content)
+                .score(score)
                 .build();
     }
 }

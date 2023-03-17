@@ -43,7 +43,5 @@ public class Tutor extends BaseTimeEntity {
     @OneToMany(mappedBy = "tutor", orphanRemoval = true)
     private List<Registration> registrations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "tutor", orphanRemoval = true)
-    private List<Review> reviews = new ArrayList<>();
 
 }

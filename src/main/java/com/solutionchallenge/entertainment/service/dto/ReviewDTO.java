@@ -14,8 +14,9 @@ public class ReviewDTO {
     private Long lectureId;
 
     private String content;
+    private double score;
 
-    public static ReviewDTO of(Long seniorId, Long lectureId, String content){
-        return new ReviewDTO(seniorId,lectureId,content);
+    public static ReviewDTO of(Long seniorId, Long lectureId, String content, double score){
+        return new ReviewDTO(seniorId,lectureId,content,score);
     }
 }

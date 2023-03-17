@@ -68,7 +68,7 @@ public class UserLectureService {
         Tutor tutor = registrationRepository.findByLecture(lecture).orElseThrow(()-> new IllegalArgumentException("Tutor doesn't exist")).getTutor();
         List<Curriculum> curriculums = curriculumRepository.findAllByLecture(lecture).orElseThrow(()-> new IllegalArgumentException("Curriculum doesn't exist"));
         List<InstroductionImages> introImages = instroductionImagesRepository.findAllByLecture(lecture).orElseThrow(()-> new IllegalArgumentException("Images doesn't exist"));
-        List<Review> reviews = reivewRepository.findAllByTutor(tutor)
+        List<Review> reviews = reivewRepository.findAllByLecture(lecture)
                                                 .orElseThrow(()-> new IllegalArgumentException("Review doesn't exist"))
                                                 .stream()
                                                 .sorted(Comparator.comparing(Review::getCreateDate).reversed())
@@ -247,9 +247,7 @@ public class UserLectureService {
 
         Senior senior = seniorRepository.findById(reviewDTO.getSeniorId()).orElseThrow(()-> new IllegalArgumentException("Senior doesn't exist"));
         Lecture lecture = lectureRepository.findById(reviewDTO.getLectureId()).orElseThrow(()-> new IllegalArgumentException("Lecture doesn't exist"));
-        Registration registration = registrationRepository.findByLecture(lecture).orElseThrow(()-> new IllegalArgumentException("Registration doesn't exist"));
-        Tutor tutor = tutorRepository.findById(registration.getTutor().getTutorId()).orElseThrow(()-> new IllegalArgumentException("Tutor doesn't exist"));
 
-        reivewRepository.save(Review.getNewInstance(senior,tutor,reviewDTO.getContent()));
+        reivewRepository.save(Review.getNewInstance(senior,lecture,reviewDTO.getContent(),reviewDTO.getScore()));
     }
 }

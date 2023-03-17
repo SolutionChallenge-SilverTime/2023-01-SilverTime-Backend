@@ -21,8 +21,11 @@ public class ReviewRequest {
     @NotNull
     private String content;
 
+    @NotNull
+    private double score;
+
     public ReviewDTO toServiceDto(){
-        return ReviewDTO.of(seniorId,lectureId,content);
+        return ReviewDTO.of(seniorId,lectureId,content,score);
     }
 
 
