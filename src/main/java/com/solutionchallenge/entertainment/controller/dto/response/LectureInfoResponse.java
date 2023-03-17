@@ -33,7 +33,6 @@ public class LectureInfoResponse {
     private String profileUrl;
     private String tutorIntro;
     private List<Map<String,String>> reviews;
-    //private List<Review> reviewTest;
 
     private Date startDate;
     private Date endDate;
@@ -45,7 +44,7 @@ public class LectureInfoResponse {
 
         return LectureInfoResponse.builder()
                 .tutorName(tutor.getName())
-                .category(lecture.getCategory())
+                .category(lecture.getCategory().getContent())
                 .title(lecture.getTitle())
                 .likeCount(lecture.getLikeCount())
                 .maxPeople(lecture.getMaxRegistrant())

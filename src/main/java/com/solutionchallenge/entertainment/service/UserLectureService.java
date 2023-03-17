@@ -4,6 +4,8 @@ import com.solutionchallenge.entertainment.controller.dto.response.BriefLectureR
 import com.solutionchallenge.entertainment.controller.dto.response.LectureInfoResponse;
 import com.solutionchallenge.entertainment.domain.apply.Apply;
 import com.solutionchallenge.entertainment.domain.apply.ApplyRepository;
+import com.solutionchallenge.entertainment.domain.category.Category;
+import com.solutionchallenge.entertainment.domain.category.CategoryRepository;
 import com.solutionchallenge.entertainment.domain.curriculum.Curriculum;
 import com.solutionchallenge.entertainment.domain.curriculum.CurriculumRepository;
 import com.solutionchallenge.entertainment.domain.instroductionImages.InstroductionImages;
@@ -47,6 +49,7 @@ public class UserLectureService {
     private final CurriculumRepository curriculumRepository;
     private final ReivewRepository reivewRepository;
     private final LikeLectureRespository likeLectureRespository;
+    private final CategoryRepository categoryRepository;
 
     public void applyLecture(Long userId, Long lectureId){
 
@@ -97,16 +100,17 @@ public class UserLectureService {
         return response;
     }
 
-    public List<Lecture> lectureCategoryFilter(String category){
+    public List<Lecture> lectureCategoryFilter(String inputCategory){
         List<Lecture> lectures;
-        if(category.equals("all")){
+        if(inputCategory.equals("all")){
             lectures = lectureRepository.findAll();
         }
-        else if(category.equals("health") || category.equals("education") || category.equals("hobby") || category.equals("social")){
+        else if(inputCategory.equals("health") || inputCategory.equals("education") || inputCategory.equals("hobby") || inputCategory.equals("social")){
+            Category category = categoryRepository.findByContent(inputCategory).orElseThrow(()-> new IllegalArgumentException("Category doesn't exist"));
             lectures = lectureRepository.findAllByCategory(category).orElseThrow(()-> new IllegalArgumentException("Lecture doesn't exist"));
         }
         else{
-            lectures = lectureRepository.findByTitleContains(category).orElseThrow(()-> new IllegalArgumentException("Lecture doesn't exist"));
+            lectures = lectureRepository.findByTitleContains(inputCategory).orElseThrow(()-> new IllegalArgumentException("Lecture doesn't exist"));
         }
 
         return lectures;

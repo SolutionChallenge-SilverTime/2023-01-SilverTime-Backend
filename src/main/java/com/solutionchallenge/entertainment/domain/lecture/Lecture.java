@@ -2,6 +2,7 @@ package com.solutionchallenge.entertainment.domain.lecture;
 
 import com.solutionchallenge.entertainment.domain.BaseTimeEntity;
 import com.solutionchallenge.entertainment.domain.apply.Apply;
+import com.solutionchallenge.entertainment.domain.category.Category;
 import com.solutionchallenge.entertainment.domain.curriculum.Curriculum;
 import com.solutionchallenge.entertainment.domain.instroductionImages.InstroductionImages;
 import com.solutionchallenge.entertainment.domain.likeLecture.LikeLecture;
@@ -36,7 +37,6 @@ public class Lecture extends BaseTimeEntity {
     private int likeCount;
     private int presentRegistrant;
     private int maxRegistrant;
-    private String category;
     private String state;
     private String title;
     private String activityTime;
@@ -54,6 +54,10 @@ public class Lecture extends BaseTimeEntity {
     private double latitude;
     private double longitude;
 
+
+    @ManyToOne
+    @JoinColumn(name="category_Id")
+    private Category category;
 
     @OneToMany(mappedBy = "lecture", orphanRemoval = true)
     List<Registration> registrations = new ArrayList<>();
@@ -73,7 +77,7 @@ public class Lecture extends BaseTimeEntity {
     @OneToMany(mappedBy = "lecture", orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
-    public static Lecture getNewInstance(TutorLectureDTO tutorLectureDTO, double latitude, double longitude){
+    public static Lecture getNewInstance(TutorLectureDTO tutorLectureDTO, double latitude, double longitude, Category category){
         return Lecture.builder()
                 .instroduction(tutorLectureDTO.getInstroduction())
                 .startDate(tutorLectureDTO.getStartDate())
@@ -82,7 +86,7 @@ public class Lecture extends BaseTimeEntity {
                 .likeCount(0)
                 .presentRegistrant(0)
                 .maxRegistrant(tutorLectureDTO.getMaxRegistrant())
-                .category(tutorLectureDTO.getCategory())
+                .category(category)
                 .state("in-progress")
                 .monday(tutorLectureDTO.getMonday())
                 .tuesday(tutorLectureDTO.getTuesday())

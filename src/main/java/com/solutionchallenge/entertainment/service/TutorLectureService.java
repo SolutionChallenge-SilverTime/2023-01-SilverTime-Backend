@@ -2,6 +2,8 @@ package com.solutionchallenge.entertainment.service;
 
 import com.solutionchallenge.entertainment.controller.dto.response.BriefLectureResponse;
 import com.solutionchallenge.entertainment.controller.dto.response.KakaoApiResponse;
+import com.solutionchallenge.entertainment.domain.category.Category;
+import com.solutionchallenge.entertainment.domain.category.CategoryRepository;
 import com.solutionchallenge.entertainment.domain.curriculum.Curriculum;
 import com.solutionchallenge.entertainment.domain.curriculum.CurriculumRepository;
 import com.solutionchallenge.entertainment.domain.instroductionImages.InstroductionImagesRepository;
@@ -34,6 +36,7 @@ public class TutorLectureService {
     private final InstroductionImagesRepository instroductionImagesRepository;
     private final RegistrationRepository registrationRepository;
     private final TutorRepository tutorRepository;
+    private final CategoryRepository categoryRepository;
 
     public void register(TutorLectureDTO tutorLectureDTO, List<MultipartFile> lectureImages, List<MultipartFile> curriculumImages){
 
@@ -44,7 +47,8 @@ public class TutorLectureService {
         double latitude = kakaoApiResponse.getDocuments().get(0).getLatitude();
         double longitude = kakaoApiResponse.getDocuments().get(0).getLongitude();
 
-        Lecture lecture = Lecture.getNewInstance(tutorLectureDTO, latitude, longitude);
+        Category category = Category.getNewInstance(tutorLectureDTO.getCategory());
+        Lecture lecture = Lecture.getNewInstance(tutorLectureDTO, latitude, longitude, category);
         Registration registration = Registration.getNewInstance("registered", tutor, lecture);
 
         List<Curriculum> curriculums = new ArrayList<>();
@@ -67,7 +71,7 @@ public class TutorLectureService {
 
         // ---------------------------------------------------------
         //instroductionImagesRepository.saveAll();
-
+        categoryRepository.save(category);
         lectureRepository.save(lecture);
         curriculumRepository.saveAll(curriculums);
         registrationRepository.save(registration);
@@ -82,7 +86,8 @@ public class TutorLectureService {
         double latitude = kakaoApiResponse.getDocuments().get(0).getLatitude();
         double longitude = kakaoApiResponse.getDocuments().get(0).getLongitude();
 
-        Lecture lecture = Lecture.getNewInstance(tutorLectureDTO, latitude, longitude);
+        Category category = Category.getNewInstance(tutorLectureDTO.getCategory());
+        Lecture lecture = Lecture.getNewInstance(tutorLectureDTO, latitude, longitude, category);
         Registration registration = Registration.getNewInstance("registered", tutor, lecture);
 
         List<Curriculum> curriculums = new ArrayList<>();
@@ -105,6 +110,7 @@ public class TutorLectureService {
         // ---------------------------------------------------------
         //instroductionImagesRepository.saveAll();
 
+        categoryRepository.save(category);
         lectureRepository.save(lecture);
         curriculumRepository.saveAll(curriculums);
         registrationRepository.save(registration);
