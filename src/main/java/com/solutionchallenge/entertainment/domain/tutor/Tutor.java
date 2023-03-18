@@ -1,12 +1,8 @@
 package com.solutionchallenge.entertainment.domain.tutor;
 
 import com.solutionchallenge.entertainment.domain.BaseTimeEntity;
-import com.solutionchallenge.entertainment.domain.lecture.Lecture;
 import com.solutionchallenge.entertainment.domain.registration.Registration;
-import com.solutionchallenge.entertainment.domain.review.Review;
-import com.solutionchallenge.entertainment.domain.significant.Sigificant;
 import com.solutionchallenge.entertainment.domain.significant.Significant;
-import com.solutionchallenge.entertainment.service.dto.TutorDTO;
 import com.solutionchallenge.entertainment.service.dto.TutorDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -55,7 +55,7 @@ public class LectureInfoResponse {
                 .curriculumImagesUrl(curriculumImagesUrl)
                 .tutorGender(tutor.getGender())
                 .tutorBirth(tutor.getBirth())
-                .profileUrl(tutor.getProfilUrl())
+                .profileUrl(tutor.getProfileUrl())
                 .tutorIntro(tutor.getIntroduction())
                 .startDate(lecture.getStartDate())
                 .endDate(lecture.getEndDate())
