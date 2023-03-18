@@ -1,6 +1,8 @@
 package com.solutionchallenge.entertainment.service;
 
 import com.solutionchallenge.entertainment.controller.dto.response.BriefLectureResponse;
+import com.solutionchallenge.entertainment.controller.dto.response.GeoResultDto;
+import com.solutionchallenge.entertainment.controller.dto.response.GeocodingApiResponse;
 import com.solutionchallenge.entertainment.controller.dto.response.KakaoApiResponse;
 import com.solutionchallenge.entertainment.domain.category.Category;
 import com.solutionchallenge.entertainment.domain.category.CategoryRepository;
@@ -21,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -29,6 +32,9 @@ public class TutorLectureService {
 
     private final KakaoAddressSearchService kakaoAddressSearchService;
     private final KakaoUriBuilderService kakaoUriBuilderService;
+
+    private final GoogleMapUriBuilderService googleMapUriBuilderService;
+    private final GoogleMapAddressSearchService googleMapAddressSearchService;
     private final UserLectureService userLectureService;
 
     private final LectureRepository lectureRepository;
@@ -43,9 +49,11 @@ public class TutorLectureService {
         Tutor tutor = tutorRepository.findById(tutorLectureDTO.getTutorId()).orElseThrow(()-> new IllegalArgumentException("Tutor doesn't exist"));
 
         // 여기서 location -> latitude, longitude로 변환해서 lecture 테이블에 반영해줌
-        KakaoApiResponse kakaoApiResponse = kakaoAddressSearchService.requestAddressSearch(tutorLectureDTO.getLocation());
-        double latitude = kakaoApiResponse.getDocuments().get(0).getLatitude();
-        double longitude = kakaoApiResponse.getDocuments().get(0).getLongitude();
+        //KakaoApiResponse kakaoApiResponse = kakaoAddressSearchService.requestAddressSearch(tutorLectureDTO.getLocation());
+        GeocodingApiResponse geocodingApiResponse = googleMapAddressSearchService.requestAddressSearch(tutorLectureDTO.getLocation());
+
+        double longitude = geocodingApiResponse.getResult().get(0).getGeometry().getLocation().get("lng");
+        double latitude = geocodingApiResponse.getResult().get(0).getGeometry().getLocation().get("lat");
 
         Category category = Category.getNewInstance(tutorLectureDTO.getCategory());
         Lecture lecture = Lecture.getNewInstance(tutorLectureDTO, latitude, longitude, category);
@@ -82,10 +90,11 @@ public class TutorLectureService {
         Tutor tutor = tutorRepository.findById(tutorLectureDTO.getTutorId()).orElseThrow(()-> new IllegalArgumentException("Tutor doesn't exist"));
 
         // 여기서 location -> latitude, longitude로 변환해서 lecture 테이블에 반영해줌
-        KakaoApiResponse kakaoApiResponse = kakaoAddressSearchService.requestAddressSearch(tutorLectureDTO.getLocation());
-        double latitude = kakaoApiResponse.getDocuments().get(0).getLatitude();
-        double longitude = kakaoApiResponse.getDocuments().get(0).getLongitude();
+        //KakaoApiResponse kakaoApiResponse = kakaoAddressSearchService.requestAddressSearch(tutorLectureDTO.getLocation());
+        GeocodingApiResponse geocodingApiResponse = googleMapAddressSearchService.requestAddressSearch(tutorLectureDTO.getLocation());
 
+        double longitude = geocodingApiResponse.getResult().get(0).getGeometry().getLocation().get("lng");
+        double latitude = geocodingApiResponse.getResult().get(0).getGeometry().getLocation().get("lat");
         Category category = Category.getNewInstance(tutorLectureDTO.getCategory());
         Lecture lecture = Lecture.getNewInstance(tutorLectureDTO, latitude, longitude, category);
         Registration registration = Registration.getNewInstance("registered", tutor, lecture);
