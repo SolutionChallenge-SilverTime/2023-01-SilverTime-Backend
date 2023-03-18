@@ -1,3 +1,4 @@
+##mysql만 docker로 돌림
 version: '3'
 services:
   database:
@@ -8,37 +9,17 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: entertainment
-#    networks:
-#      - gdsc_solution_challenge
-#
-#  spring-boot:
-#    build: .
-#    container_name: spring_container_gdsc
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      - mysql
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/entertainment
-#      SPRING_DATASOURCE_USERNAME: root
-#      SPRING_DATASOURCE_PASSWORD: root
-#    networks:
-#      - gdsc_solution_challeqnge
-#networks:
-#  gdsc_solution_challenge:
 
 #version: "3"
 #services:
 #  database:
 #    image: mysql
 #    environment:
-#      MYSQL_DATABASE: entertainment
-#      MYSQL_USER: user
-#      MYSQL_PASSWORD: userpwd
+#      MYSQL_DATABASE: entertain
+##      MYSQL_USER: user2
+##      MYSQL_PASSWORD: userpwd
 #      MYSQL_ROOT_HOST: '%'
 #      MYSQL_ROOT_PASSWORD: root
-#    volumes:
-#      - ./db/data:/var/lib/mysql
 #    ports:
 #      - 3306:3306
 #    restart: always
@@ -51,9 +32,9 @@ services:
 #    depends_on:
 #      - database
 #    environment:
-#      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/entertainment
-#      SPRING_DATASOURCE_USERNAME: user
-#      SPRING_DATASOURCE_PASSWORD: userpw
+#      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/entertain
+#      SPRING_DATASOURCE_USERNAME: root
+#      SPRING_DATASOURCE_PASSWORD: root
 #    networks:
 #      - test
 #    restart: always

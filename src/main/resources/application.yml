@@ -1,10 +1,11 @@
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://mysql:3306/entertainment?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
-    url : jdbc:mysql://localhost:3306/entertainment?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
-    username: root
-    password: root
+  ## spring 서버 local로 돌릴때
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/entertainment?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
+#    username: root
+#    password: root
+  ##
   jpa:
     show-sql: true
     hibernate:
@@ -20,10 +21,3 @@ spring:
 app:
   firebase-configuration-file: ./serviceAccountKey.json
   firebase-bucket: silvertime-16cf3.appspot.com
-
-
-
-kakao:
-  rest:
-    api:
-      key: ${KAKAO_REST_API_KEY}
