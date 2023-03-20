@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/signin")
+@RequestMapping("/auth/signin")
 @RequiredArgsConstructor
 public class UserController {
     private final SeniorService seniorService;
