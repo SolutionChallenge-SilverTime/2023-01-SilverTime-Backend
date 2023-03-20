@@ -70,6 +70,7 @@ public class Senior extends BaseTimeEntity {
     }
     public static Senior getSeniorInfo(SeniorDTO seniorDTO){
         return Senior.builder()
+                .nickName(seniorDTO.getNickName())
                 .name(seniorDTO.getName())
                 .adress(seniorDTO.getAddress())
                 .email(seniorDTO.getEmail())

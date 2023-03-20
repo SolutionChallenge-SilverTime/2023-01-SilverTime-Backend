@@ -25,6 +25,7 @@ public class GuardianService {
 
     public void signUp(GuardianDTO guardianDTO, MultipartFile profilImage, SeniorDTO seniorDTO, InterestDTO interestDTO) throws Exception{
         validateDuplicate(guardianDTO);
+//        seniorDTO.SeniorNickEqualsGuardian(guardianDTO.getNickName());
         Senior getSenior = setSenior(guardianDTO.getSeniorNickname(), seniorDTO);
         interestService.create(getSenior,interestDTO.getContents());
         Guardian guardian = Guardian.newInstance(guardianDTO, getSenior);

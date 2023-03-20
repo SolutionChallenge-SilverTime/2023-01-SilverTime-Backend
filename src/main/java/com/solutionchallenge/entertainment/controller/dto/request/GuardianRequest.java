@@ -42,7 +42,7 @@ public class GuardianRequest {
         return GuardianDTO.of(nickName, password, name, address, phone, email, gender, birth, seniorNickName);
     }
     public GurdianInputSeniorRequest toInputRequest(){
-        return GurdianInputSeniorRequest.of(seniorName,seniorAddress,seniorPhone,seniorGender,seniorBirth,seniorEmail);
+        return GurdianInputSeniorRequest.of(nickName,seniorName,seniorAddress,seniorPhone,seniorGender,seniorBirth,seniorEmail);
     }
     public InterestDTO toInterestServiceDto(){
         return InterestDTO.of(interests);

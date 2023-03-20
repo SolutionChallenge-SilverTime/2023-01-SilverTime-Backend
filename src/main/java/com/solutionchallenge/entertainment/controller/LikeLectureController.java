@@ -4,6 +4,7 @@ import com.solutionchallenge.entertainment.controller.dto.request.LikeLectureReq
 import com.solutionchallenge.entertainment.service.LikeLectureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class LikeLectureController {
     private final LikeLectureService likeLectureService;
     @PostMapping()
-    public ResponseEntity<?> likeUnlike(@RequestBody LikeLectureRequest likeLectureRequest){
-        likeLectureService.likeUnlike(likeLectureRequest.toServiceDto());
+    public ResponseEntity<?> likeUnlike(@AuthenticationPrincipal String nickName, @RequestBody LikeLectureRequest likeLectureRequest){
+        likeLectureService.likeUnlike(nickName,likeLectureRequest.toServiceDto());
         return ResponseEntity.ok("좋아요");
     }
 }
