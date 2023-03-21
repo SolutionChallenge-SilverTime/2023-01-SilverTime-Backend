@@ -26,7 +26,7 @@ public class UserController {
     public ResponseEntity<?> signin(@Valid @RequestBody UserRequest userRequest) {
         UserResponse userResponse = setIdentity(userRequest.getIdentity(), userRequest);
 //        final String token = tokenProvider.create(userResponse);
-
+        userResponse.setIdentity(userRequest.getIdentity());
         return ResponseEntity.ok(userResponse);
     }
 
