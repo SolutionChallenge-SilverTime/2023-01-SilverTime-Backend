@@ -18,10 +18,10 @@ public class LikeLectureService {
     private final SeniorService seniorService;
     private final LectureTestService lectureTestService;
     private final LectureRepository lectureRepository;
-    public void likeUnlike(String seniorNickName,LikeLectureDTO likeLectureDTO) {
+    public void likeUnlike(LikeLectureDTO likeLectureDTO) {
         Lecture lecture = lectureTestService.findById(likeLectureDTO.getLectureId());
-//        Senior senior = seniorService.findBySeniorId(likeLectureDTO.getSeniorId());
-        Senior senior = seniorService.findByNickName(seniorNickName);
+        Senior senior = seniorService.findBySeniorId(likeLectureDTO.getSeniorId());
+//        Senior senior = seniorService.findByNickName(seniorNickName);
         //조항요 취소
         if(likeLectureRespository.existsByLectureAndSenior(lecture,senior)){
             unLike(lecture,senior);

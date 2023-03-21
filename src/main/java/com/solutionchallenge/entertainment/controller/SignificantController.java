@@ -17,18 +17,18 @@ import java.util.List;
 public class SignificantController {
     private final SignificantService significantService;
     @PostMapping("/send")
-    public ResponseEntity<?> sendSignificant(@AuthenticationPrincipal String nickName,@Valid @RequestBody SignificantRequest significantRequest){
-        significantService.create(nickName,significantRequest.toSeriveDto());
+    public ResponseEntity<?> sendSignificant(@Valid @RequestBody SignificantRequest significantRequest){
+        significantService.create(significantRequest.toSeriveDto());
         return ResponseEntity.ok("send");
     }
-    @GetMapping("/tutorSendingList")
-    public ResponseEntity<?> turtorSendingList(@AuthenticationPrincipal String nickName) {
+    @GetMapping("/tutorSendingList/{nickName}")
+    public ResponseEntity<?> turtorSendingList(@PathVariable String nickName) {
         List<SignificantResponse> significantResponse = significantService.tutorSendingList(nickName);
         return ResponseEntity.ok(significantResponse);
     }
 
-    @GetMapping("/guardianReceiveList")
-    public ResponseEntity<?> guardianReceiveList(@AuthenticationPrincipal String nickName) {
+    @GetMapping("/guardianReceiveList/{nickName}")
+    public ResponseEntity<?> guardianReceiveList(@PathVariable String nickName) {
         List<SignificantResponse> significantResponses = significantService.guardianReceiveList(nickName);
         return ResponseEntity.ok(significantResponses);
     }

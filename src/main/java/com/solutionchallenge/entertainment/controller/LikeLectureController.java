@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class LikeLectureController {
     private final LikeLectureService likeLectureService;
     @PostMapping()
-    public ResponseEntity<?> likeUnlike(@AuthenticationPrincipal String nickName, @RequestBody LikeLectureRequest likeLectureRequest){
-        likeLectureService.likeUnlike(nickName,likeLectureRequest.toServiceDto());
+    public ResponseEntity<?> likeUnlike(@RequestBody LikeLectureRequest likeLectureRequest){
+        likeLectureService.likeUnlike(likeLectureRequest.toServiceDto());
         return ResponseEntity.ok("좋아요");
     }
 }

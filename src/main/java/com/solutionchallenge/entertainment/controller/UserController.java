@@ -25,8 +25,9 @@ public class UserController {
     @PostMapping()
     public ResponseEntity<?> signin(@Valid @RequestBody UserRequest userRequest) {
         UserResponse userResponse = setIdentity(userRequest.getIdentity(), userRequest);
-        final String token = tokenProvider.create(userResponse);
-        return ResponseEntity.ok(token);
+//        final String token = tokenProvider.create(userResponse);
+
+        return ResponseEntity.ok(userResponse);
     }
 
     private UserResponse setIdentity(int identity, UserRequest userRequest) {

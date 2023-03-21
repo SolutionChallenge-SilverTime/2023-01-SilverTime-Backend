@@ -21,10 +21,10 @@ public class SignificantService {
     private final SignificantRepository significantRepository;
     private final GuardianService guardianService;
     private final TutorService tutorService;
-    public void create(String turtorNickName,SignificantDTO significantDTO) {
+    public void create(SignificantDTO significantDTO) {
         Guardian guardian = guardianService.findByNickName(significantDTO.getGurdianNickName());
-//        Tutor tutor = tutorService.findByNickName(significantDTO.getTutorNickName());
-        Tutor tutor = tutorService.findByNickName(turtorNickName);
+        Tutor tutor = tutorService.findByNickName(significantDTO.getTutorNickName());
+//        Tutor tutor = tutorService.findByNickName(turtorNickName);
         Significant significant = Significant.getNewInstance(significantDTO, guardian, tutor);
         significantRepository.save(significant);
     }
