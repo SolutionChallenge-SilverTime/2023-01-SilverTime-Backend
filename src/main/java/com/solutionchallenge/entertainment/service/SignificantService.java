@@ -24,6 +24,7 @@ public class SignificantService {
     public void create(SignificantDTO significantDTO) {
         Guardian guardian = guardianService.findByNickName(significantDTO.getGurdianNickName());
         Tutor tutor = tutorService.findByNickName(significantDTO.getTutorNickName());
+//        Tutor tutor = tutorService.findByNickName(turtorNickName);
         Significant significant = Significant.getNewInstance(significantDTO, guardian, tutor);
         significantRepository.save(significant);
     }

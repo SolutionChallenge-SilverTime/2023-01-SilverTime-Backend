@@ -25,8 +25,9 @@ public class SeniorDTO {
     }
 
 
-    public static SeniorDTO of(String name, String address, String phone, String gender, Date birth,String email) {
+    public static SeniorDTO of(String nickName,String name, String address, String phone, String gender, Date birth,String email) {
         return SeniorDTO.builder()
+                .nickName(nickName)
                 .name(name)
                 .address(address)
                 .phone(phone)
@@ -39,5 +40,9 @@ public class SeniorDTO {
         return SeniorDTO.builder()
                 .nickName(nickName)
                 .password(password).build();
+    }
+
+    public void SeniorNickEqualsGuardian(String nickName) {
+        this.nickName = nickName;
     }
 }

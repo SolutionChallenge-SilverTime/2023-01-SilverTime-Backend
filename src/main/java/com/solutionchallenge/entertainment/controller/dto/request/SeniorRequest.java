@@ -14,7 +14,6 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 public class SeniorRequest {
-    @NotNull
     private String nickName;
     @NotNull
     private String password;

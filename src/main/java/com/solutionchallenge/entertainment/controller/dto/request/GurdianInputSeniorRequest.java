@@ -11,6 +11,7 @@ import java.util.Date;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 public class GurdianInputSeniorRequest {
+    private String nickName;
     private String name;
     private String address;
     private String phone;
@@ -19,12 +20,12 @@ public class GurdianInputSeniorRequest {
 
     private String email;
 
-    public static GurdianInputSeniorRequest of(String name, String address, String phone, String gender, Date birth, String email) {
-        return new GurdianInputSeniorRequest(name, address, phone, gender, birth,email);
+    public static GurdianInputSeniorRequest of(String nickName,String name, String address, String phone, String gender, Date birth, String email) {
+        return new GurdianInputSeniorRequest(nickName,name, address, phone, gender, birth,email);
     }
 
     public SeniorDTO toServiceDto(){
-        return SeniorDTO.of(name, address, phone, gender, birth,email);
+        return SeniorDTO.of(nickName,name, address, phone, gender, birth,email);
     }
 
 }

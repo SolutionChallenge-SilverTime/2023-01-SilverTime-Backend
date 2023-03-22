@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/tutor")
+@RequestMapping("/auth/tutor")
 @RequiredArgsConstructor
 public class TutorController {
     private final TutorService tutorService;

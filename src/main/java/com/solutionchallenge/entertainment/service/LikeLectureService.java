@@ -21,6 +21,7 @@ public class LikeLectureService {
     public void likeUnlike(LikeLectureDTO likeLectureDTO) {
         Lecture lecture = lectureTestService.findById(likeLectureDTO.getLectureId());
         Senior senior = seniorService.findBySeniorId(likeLectureDTO.getSeniorId());
+//        Senior senior = seniorService.findByNickName(seniorNickName);
         //조항요 취소
         if(likeLectureRespository.existsByLectureAndSenior(lecture,senior)){
             unLike(lecture,senior);

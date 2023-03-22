@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
 public class SignificantRequest {
     @NotNull
     private String gurdianNickName;
-    @NotNull
     private String tutorNickName;
     @NotNull
     private String seniorName;

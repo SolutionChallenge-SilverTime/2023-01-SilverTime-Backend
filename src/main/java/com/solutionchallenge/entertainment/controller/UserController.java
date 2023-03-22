@@ -9,16 +9,14 @@ import com.solutionchallenge.entertainment.service.SeniorService;
 import com.solutionchallenge.entertainment.service.TutorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/signin")
+@RequestMapping("/auth/signin")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class UserController {
     private final SeniorService seniorService;
     private final GuardianService guardianService;
@@ -27,8 +25,9 @@ public class UserController {
     @PostMapping()
     public ResponseEntity<?> signin(@Valid @RequestBody UserRequest userRequest) {
         UserResponse userResponse = setIdentity(userRequest.getIdentity(), userRequest);
-        final String token = tokenProvider.create(userResponse);
-        return ResponseEntity.ok(token);
+//        final String token = tokenProvider.create(userResponse);
+        userResponse.setIdentity(userRequest.getIdentity());
+        return ResponseEntity.ok(userResponse);
     }
 
     private UserResponse setIdentity(int identity, UserRequest userRequest) {

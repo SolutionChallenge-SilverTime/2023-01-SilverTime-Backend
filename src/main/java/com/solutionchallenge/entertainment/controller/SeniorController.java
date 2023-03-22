@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/senior")
+@RequestMapping("/auth/senior")
 @RequiredArgsConstructor
 public class SeniorController {
     private final SeniorService seniorService;

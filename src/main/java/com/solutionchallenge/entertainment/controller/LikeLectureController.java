@@ -4,6 +4,7 @@ import com.solutionchallenge.entertainment.controller.dto.request.LikeLectureReq
 import com.solutionchallenge.entertainment.service.LikeLectureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

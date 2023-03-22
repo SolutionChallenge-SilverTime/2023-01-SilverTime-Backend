@@ -5,6 +5,7 @@ import com.solutionchallenge.entertainment.controller.dto.response.SignificantRe
 import com.solutionchallenge.entertainment.service.SignificantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
