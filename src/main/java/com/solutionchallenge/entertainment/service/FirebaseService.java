@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -29,4 +30,13 @@ public class FirebaseService {
         Blob blob = bucket.create(fileName, file.getBytes(), file.getContentType());
         return"https://storage.googleapis.com/" + bucket.getName() + "/" + blob.getName();
     }
+
+//    public List<String> uploadMultiFiles(List<MultipartFile> files) throws IOException, FirebaseAuthException {
+//        Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
+//        InputStream content = new ByteArrayInputStream(file.getBytes());
+//        // 업로드 할 파일 이름 생성
+//        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+//        Blob blob = bucket.create(fileName, file.getBytes(), file.getContentType());
+//        return"https://storage.googleapis.com/" + bucket.getName() + "/" + blob.getName();
+//    }
 }

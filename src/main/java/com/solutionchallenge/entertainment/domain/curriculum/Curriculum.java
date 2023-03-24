@@ -30,9 +30,10 @@ public class Curriculum extends BaseTimeEntity {
     @JoinColumn(name="lecture_Id")
     private Lecture lecture;
 
-    public static Curriculum getNewInstance(String content, Lecture lecture) {
+    public static Curriculum getNewInstance(String content, String imageUrl, Lecture lecture) {
         return Curriculum.builder()
                 .content(content)
+                .imageUrl(imageUrl)
                 .lecture(lecture)
                 .build();
     }

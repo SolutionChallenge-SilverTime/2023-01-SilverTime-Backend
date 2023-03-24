@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserLectureService {
 
-    private static final double RADIUS_KM = 10.0;
+    private static final double RADIUS_KM = 1.0;
     private static final int MAX_REVIEW = 10;
     private final SeniorRepository seniorRepository;
     private final ApplyRepository applyRepository;
@@ -110,14 +110,15 @@ public class UserLectureService {
             lectures = lectureRepository.findAllByCategory(category).orElseThrow(()-> new IllegalArgumentException("Lecture doesn't exist"));
         }
         else{
+            log.info("!!!!!!!!!!!!!!!!!!!!!!!!!");
             lectures = lectureRepository.findByTitleContains(inputCategory).orElseThrow(()-> new IllegalArgumentException("Lecture doesn't exist"));
         }
 
         return lectures;
     }
 
-    public List<LectureDistance> lectureSortNew(String category, Senior senior){
-         return lectureCategoryFilter(category).stream()
+    public List<LectureDistance> lectureSortNew(Category category, Senior senior){
+         return lectureCategoryFilter(category.getContent()).stream()
                     .map(lecture -> LectureDistance.builder()
                             .inputlecture(lecture)
                             .userLatitude(senior.getLatitude())
@@ -130,8 +131,8 @@ public class UserLectureService {
                     .sorted(Comparator.comparing(LectureDistance::getModifiedDate).reversed())
                     .collect(Collectors.toList());
     }
-    public List<LectureDistance> lectureSortDistance(String category, Senior senior){
-         return lectureCategoryFilter(category).stream()
+    public List<LectureDistance> lectureSortDistance(Category category, Senior senior){
+         return lectureCategoryFilter(category.getContent()).stream()
                     .map(lecture -> LectureDistance.builder()
                             .inputlecture(lecture)
                             .userLatitude(senior.getLatitude())
@@ -144,8 +145,8 @@ public class UserLectureService {
                     .sorted(Comparator.comparing(LectureDistance::getDistance))
                     .collect(Collectors.toList());
     }
-    public List<LectureDistance> lectureSortLike(String category, Senior senior){
-         return lectureCategoryFilter(category).stream()
+    public List<LectureDistance> lectureSortLike(Category category, Senior senior){
+         return lectureCategoryFilter(category.getContent()).stream()
                     .map(lecture -> LectureDistance.builder()
                             .inputlecture(lecture)
                             .userLatitude(senior.getLatitude())
@@ -163,15 +164,21 @@ public class UserLectureService {
 
         Senior senior = seniorRepository.findById(userId).orElseThrow(()-> new IllegalArgumentException("Senior doesn't exist"));
 
+        Category categoryObject = new Category();
+        if(category.equals("education") || category.equals("health") || category.equals("hobby") || category.equals("social") || category.equals("all")) {
+            categoryObject = categoryRepository.findByContent(category).orElseThrow(() -> new IllegalArgumentException("Senior doesn't exist"));
+        }
+        else categoryObject = Category.getNewInstance(category);
+
         List<LectureDistance> finalLecture = new ArrayList<>();
         if(sort.equals("new")){
-            finalLecture = lectureSortNew(category, senior);
+            finalLecture = lectureSortNew(categoryObject, senior);
         }
         else if(sort.equals("distance")){
-            finalLecture = lectureSortDistance(category, senior);
+            finalLecture = lectureSortDistance(categoryObject, senior);
         }
         else if(sort.equals("like")){
-            finalLecture = lectureSortLike(category, senior);
+            finalLecture = lectureSortLike(categoryObject, senior);
         }
 
         List<BriefLectureResponse> responses = new ArrayList<>();

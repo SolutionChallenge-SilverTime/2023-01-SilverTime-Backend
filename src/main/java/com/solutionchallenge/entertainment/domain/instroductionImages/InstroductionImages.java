@@ -28,9 +28,9 @@ public class InstroductionImages {
     @JoinColumn(name = "lecture_Id")
     private Lecture lecture;
 
-    public static InstroductionImages getNewInstance(List<MultipartFile> images, Lecture lecture) {
+    public static InstroductionImages getNewInstance(String imageUrl, Lecture lecture) {
         return InstroductionImages.builder()
-                // 추가해야됨.
+                .imageUrl(imageUrl)
                 .lecture(lecture)
                 .build();
     }

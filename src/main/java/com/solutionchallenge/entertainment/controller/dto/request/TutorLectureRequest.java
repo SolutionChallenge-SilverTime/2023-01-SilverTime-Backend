@@ -52,8 +52,6 @@ public class TutorLectureRequest {
     private String saturday;
     @NotNull
     private String sunday;
-    @NotNull
-    private String representImageUrl;
 
     @NotNull
     private String title;
@@ -69,6 +67,6 @@ public class TutorLectureRequest {
 
 
     public TutorLectureDTO toServiceDto(){
-        return TutorLectureDTO.of(tutorId,category,maxRegistrant,week,startDate,endDate,activityTime,monday,tuesday,wednesday,thursday,friday,saturday,sunday,representImageUrl,title,instroduction,curiculums,location);
+        return TutorLectureDTO.of(tutorId,category,maxRegistrant,week,startDate,endDate,activityTime,monday,tuesday,wednesday,thursday,friday,saturday,sunday,title,instroduction,curiculums,location);
     }
 }

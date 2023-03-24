@@ -103,7 +103,7 @@ public class Lecture extends BaseTimeEntity {
                 .friday(tutorLectureDTO.getFriday())
                 .saturday(tutorLectureDTO.getSaturday())
                 .sunday(tutorLectureDTO.getSunday())
-                .representImageUrl(tutorLectureDTO.getRepresentImageUrl())
+                .representImageUrl("")
                 .title(tutorLectureDTO.getTitle())
                 .activityTime(tutorLectureDTO.getActivityTime())
                 .week(tutorLectureDTO.getWeek())
@@ -114,5 +114,8 @@ public class Lecture extends BaseTimeEntity {
 
     public void updateRegistrant(int num) {
         this.presentRegistrant = num;
+    }
+    public void updateRepresentImageUrl(String imageUrl) {
+        this.representImageUrl = imageUrl;
     }
 }

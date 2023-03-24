@@ -33,7 +33,6 @@ public class TutorLectureDTO {
     private String friday;
     private String saturday;
     private String sunday;
-    private String representImageUrl;
 
     private String title;
 
@@ -42,8 +41,9 @@ public class TutorLectureDTO {
     private List<String> curiculums;
 
     private String location;
-    public static TutorLectureDTO of(Long tutorId, String category, int maxRegistrant, int week, Date startDate, Date endDate, String activityTime, String monday, String tuesday, String wednesday, String thursday, String friday, String saturday, String sunday, String representImageUrl , String title, String instroduction, List<String> curiculums, String location){
-        return new TutorLectureDTO(tutorId, category, maxRegistrant, week, startDate, endDate, activityTime, monday, tuesday, wednesday, thursday, friday, saturday, sunday, representImageUrl, title, instroduction, curiculums, location);
+    public static TutorLectureDTO of(Long tutorId, String category, int maxRegistrant, int week, Date startDate, Date endDate, String activityTime, String monday, String tuesday, String wednesday, String thursday, String friday, String saturday, String sunday, String title, String instroduction, List<String> curiculums, String location){
+        return new TutorLectureDTO(tutorId, category, maxRegistrant, week, startDate, endDate, activityTime, monday, tuesday, wednesday, thursday, friday, saturday, sunday, title, instroduction, curiculums, location);
     }
+
 
 }

@@ -1,5 +1,6 @@
 package com.solutionchallenge.entertainment.controller.dto;
 
+import com.google.firebase.auth.FirebaseAuthException;
 import com.solutionchallenge.entertainment.controller.dto.request.TutorLectureRequest;
 import com.solutionchallenge.entertainment.controller.dto.response.BriefLectureResponse;
 import com.solutionchallenge.entertainment.service.TutorLectureService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -21,22 +23,23 @@ public class TutorLectureController {
 
     private final TutorLectureService tutorLectureService;
 
+    // 커리큘럼 리스트 갯수와 커리큘럼 이미지 갯수가 같아야 함.
     @PostMapping(value = "/register", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> register(@Valid @RequestPart TutorLectureRequest request, @RequestPart List<MultipartFile> lectureImages, @RequestPart List<MultipartFile> curriculumImages){
+    public ResponseEntity<?> register(@Valid @RequestPart TutorLectureRequest request, @RequestPart List<MultipartFile> lectureImages, @RequestPart List<MultipartFile> curriculumImages) throws Exception {
 
         tutorLectureService.register(request.toServiceDto(), lectureImages, curriculumImages);
 
         return ResponseEntity.ok("Register Succeed");
     }
 
-    // 통과
-    @PostMapping(value = "/register2", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> register2(@Valid @RequestBody TutorLectureRequest request){
 
-        tutorLectureService.register2(request.toServiceDto());
-
-        return ResponseEntity.ok("Register Succeed");
-    }
+//    @PostMapping(value = "/register2", consumes = {MediaType.APPLICATION_JSON_VALUE})
+//    public ResponseEntity<?> register2(@Valid @RequestBody TutorLectureRequest request){
+//
+//        tutorLectureService.register2(request.toServiceDto());
+//
+//        return ResponseEntity.ok("Register Succeed");
+//    }
     /*
     @PatchMapping("/modify")
     public ResponseEntity<?> modifyLecture(){
