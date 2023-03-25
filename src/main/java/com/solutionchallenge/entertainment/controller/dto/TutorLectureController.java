@@ -23,7 +23,6 @@ public class TutorLectureController {
 
     private final TutorLectureService tutorLectureService;
 
-    // 커리큘럼 리스트 갯수와 커리큘럼 이미지 갯수가 같아야 함.
     @PostMapping(value = "/register", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> register(@Valid @RequestPart TutorLectureRequest request, @RequestPart List<MultipartFile> lectureImages, @RequestPart List<MultipartFile> curriculumImages) throws Exception {
 
@@ -32,32 +31,6 @@ public class TutorLectureController {
         return ResponseEntity.ok("Register Succeed");
     }
 
-
-//    @PostMapping(value = "/register2", consumes = {MediaType.APPLICATION_JSON_VALUE})
-//    public ResponseEntity<?> register2(@Valid @RequestBody TutorLectureRequest request){
-//
-//        tutorLectureService.register2(request.toServiceDto());
-//
-//        return ResponseEntity.ok("Register Succeed");
-//    }
-    /*
-    @PatchMapping("/modify")
-    public ResponseEntity<?> modifyLecture(){
-
-        tutorLectureService.modifyLecture();
-
-        return ResponseEntity.ok("Modify Succeed");
-    }
-`
-    @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteLecture(){
-
-        tutorLectureService.deleteLecture();
-
-        return ResponseEntity.ok("Delete Succeed");
-    }
-*/
-    // 통과
     @GetMapping("/my-lecture")
     public ResponseEntity<?> showAllLecture(@RequestParam Long tutorId, @RequestParam String state){
 

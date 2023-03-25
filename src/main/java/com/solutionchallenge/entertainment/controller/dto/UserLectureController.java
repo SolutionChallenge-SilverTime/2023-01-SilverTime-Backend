@@ -53,9 +53,9 @@ public class UserLectureController {
     }
 
     @GetMapping("/information")
-    public ResponseEntity<?> showLectureInfo(@RequestParam Long lectureId){
+    public ResponseEntity<?> showLectureInfo(@RequestParam Long lectureId, @RequestParam Long userId){
 
-        LectureInfoResponse response = userLectureService.showLectureInfo(lectureId);
+        LectureInfoResponse response = userLectureService.showLectureInfo(lectureId, userId);
 
         return ResponseEntity.ok(response);
     }

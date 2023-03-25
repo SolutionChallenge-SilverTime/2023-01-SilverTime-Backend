@@ -39,8 +39,12 @@ public class LectureInfoResponse {
     private Date registerDate;
     private String activityTime;
 
+    private double userLat;
+    private double userLng;
+    private double lectureLat;
+    private double lectureLng;
 
-    public static LectureInfoResponse getNewInstance(Lecture lecture, Tutor tutor, List<String> curriculumContents, List<String> curriculumImagesUrl, List<String> lectureIntroImagesUrl, List<Map<String,String>> reviews) {
+    public static LectureInfoResponse getNewInstance(Lecture lecture, Tutor tutor, List<String> curriculumContents, List<String> curriculumImagesUrl, List<String> lectureIntroImagesUrl, List<Map<String,String>> reviews,Double userLat,Double userLng, Double lectureLat, Double lectureLng) {
 
         return LectureInfoResponse.builder()
                 .tutorName(tutor.getName())
@@ -62,6 +66,10 @@ public class LectureInfoResponse {
                 .registerDate(Timestamp.valueOf(lecture.getCreateDate()))
                 .activityTime(lecture.getActivityTime())
                 .reviews(reviews)
+                .userLng(userLng)
+                .userLat(userLat)
+                .lectureLat(lectureLat)
+                .lectureLng(lectureLng)
                 .build();
     }
 }

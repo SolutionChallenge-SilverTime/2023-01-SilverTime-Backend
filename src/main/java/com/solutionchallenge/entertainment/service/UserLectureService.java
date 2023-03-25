@@ -65,8 +65,8 @@ public class UserLectureService {
         applyRepository.save(apply);
     }
 
-    public LectureInfoResponse showLectureInfo(Long lectureId) {
-
+    public LectureInfoResponse showLectureInfo(Long lectureId, Long userId) {
+        Senior senior = seniorRepository.findById(userId).orElseThrow(()-> new IllegalArgumentException("User doesn't exist"));
         Lecture lecture = lectureRepository.findById(lectureId).orElseThrow(()-> new IllegalArgumentException("Lecture doesn't exist"));
         Tutor tutor = registrationRepository.findByLecture(lecture).orElseThrow(()-> new IllegalArgumentException("Tutor doesn't exist")).getTutor();
         List<Curriculum> curriculums = curriculumRepository.findAllByLecture(lecture).orElseThrow(()-> new IllegalArgumentException("Curriculum doesn't exist"));
@@ -95,7 +95,7 @@ public class UserLectureService {
         for(InstroductionImages element : introImages){
             lectureIntroImagesUrl.add(element.getImageUrl());
         }
-        LectureInfoResponse response = LectureInfoResponse.getNewInstance(lecture, tutor, curriculumContents, curriculumImagesUrl, lectureIntroImagesUrl,reviewResult);
+        LectureInfoResponse response = LectureInfoResponse.getNewInstance(lecture, tutor, curriculumContents, curriculumImagesUrl, lectureIntroImagesUrl,reviewResult,senior.getLatitude(),senior.getLongitude(),lecture.getLatitude(),lecture.getLongitude());
 
         return response;
     }
@@ -110,7 +110,6 @@ public class UserLectureService {
             lectures = lectureRepository.findAllByCategory(category).orElseThrow(()-> new IllegalArgumentException("Lecture doesn't exist"));
         }
         else{
-            log.info("!!!!!!!!!!!!!!!!!!!!!!!!!");
             lectures = lectureRepository.findByTitleContains(inputCategory).orElseThrow(()-> new IllegalArgumentException("Lecture doesn't exist"));
         }
 
@@ -187,11 +186,7 @@ public class UserLectureService {
         }
 
         return responses;
-        // lecture 테이블에 distance가 없어서 거리순 정렬이 안됨
-//        return lectures
-//                .stream()
-//                .map(lecture -> BriefLectureResponse.getNewInstance(lecture))
-//                .collect(Collectors.toList());
+
     }
 
 
