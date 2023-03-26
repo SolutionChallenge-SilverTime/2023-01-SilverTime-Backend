@@ -21,7 +21,6 @@ public class SignificantResponse {
     private Long significantId;
     private String tutorProfileUrl;
     private String guardianProfileUrl;
-
     public SignificantResponse(Significant significant) {
         this.tutorName = significant.getTutor().getName();
         this.guardianName = significant.getGuardian().getName();

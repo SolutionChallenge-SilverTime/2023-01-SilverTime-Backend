@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/significant")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class SignificantController {
     private final SignificantService significantService;
     @PostMapping("/send")
