@@ -20,7 +20,6 @@ import java.util.List;
 @Entity
 public class Interest extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long interestId;
 
     @Column
@@ -32,5 +31,9 @@ public class Interest extends BaseTimeEntity {
 
     public static Interest getNewInstance(String content) {
         return Interest.builder().content(content).build();
+    }
+
+    public static Interest getNewInstanceID(String content, Long num) {
+        return Interest.builder().content(content).interestId(num).build();
     }
 }

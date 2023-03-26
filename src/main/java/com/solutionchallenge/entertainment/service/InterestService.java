@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,4 +32,23 @@ public class InterestService {
 
         }
     }
+    public void setRelation(Senior senior, List<Long> interestIds) {
+        if(interestIds==null)return;
+        for(Long interestId:interestIds){
+            Interest interest = findById(interestId);
+            interestRelationService.create(senior, interest);
+        }
+    }
+    public void setInterest(List<String> contents){
+        Long num = 0L;
+        for(String content:contents){
+            Interest interest = Interest.getNewInstanceID(content,num);
+            num++;
+            interestRepository.save(interest);
+        }
+    }
+    Interest findById(Long interestId){
+        return interestRepository.findById(interestId).orElseThrow(() -> new IllegalArgumentException("잘된된 input"));
+    }
+
 }

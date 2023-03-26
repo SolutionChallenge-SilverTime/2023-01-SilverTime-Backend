@@ -31,7 +31,7 @@ public class SignificantService {
 
     public List<SignificantResponse> tutorSendingList(String nickName) {
         Tutor tutor = tutorService.findByNickName(nickName);
-        List<Significant> significants = significantRepository.findByTutor(tutor);
+        List<Significant> significants = significantRepository.findByTutorOrderByCreateDateDesc(tutor);
         List<SignificantResponse> significantResponses = significants.stream().map(SignificantResponse::new).collect(Collectors.toList());
         return significantResponses;
     }

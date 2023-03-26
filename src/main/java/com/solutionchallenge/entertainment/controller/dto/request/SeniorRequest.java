@@ -28,6 +28,7 @@ public class SeniorRequest {
     private String gender;
     private Date birth;
     private List<String> interests;
+    private List<Long> interestIds;
 
     public SeniorDTO toServiceDto() {
         return SeniorDTO.of(nickName, password, name, email,address, phone, gender, birth);
@@ -36,5 +37,8 @@ public class SeniorRequest {
         return InterestDTO.of(interests);
     }
 
+    public InterestDTO toInterestIdServiceDto(){
+        return InterestDTO.idOf(interestIds);
+    }
 
 }

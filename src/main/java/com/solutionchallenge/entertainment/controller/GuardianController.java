@@ -27,7 +27,7 @@ public class GuardianController {
     @PostMapping(value = "signup", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> signUp(@Valid @RequestPart GuardianRequest guardianRequest, @RequestPart MultipartFile profileImage) throws Exception {
         GurdianInputSeniorRequest gurdianInputSeniorRequest= guardianRequest.toInputRequest();
-        guardianService.signUp(guardianRequest.toServiceDto(), profileImage,gurdianInputSeniorRequest.toServiceDto(), guardianRequest.toInterestServiceDto());
+        guardianService.signUp(guardianRequest.toServiceDto(), profileImage,gurdianInputSeniorRequest.toServiceDto(), guardianRequest.toInterestIdServiceDto());
         return ResponseEntity.ok("signup complete");
     }
     @PostMapping("/test")

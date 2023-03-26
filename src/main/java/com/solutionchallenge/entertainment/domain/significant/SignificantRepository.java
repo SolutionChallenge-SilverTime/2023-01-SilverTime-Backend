@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface SignificantRepository extends JpaRepository<Significant,Long> {
     List<Significant> findByTutor(Tutor tutor);
+    List<Significant> findByTutorOrderByCreateDateDesc(Tutor tutor);
 
     List<Significant> findByGuardian(Guardian guardian);
 

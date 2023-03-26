@@ -8,5 +8,7 @@ public interface InterestRepository extends JpaRepository<Interest, Long> {
     Boolean existsByContent(String content);
 
     Optional<Interest> findByContent(String content);
+
+    Optional<Interest> findById(Long interestId);
 }
 

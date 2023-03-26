@@ -37,6 +37,7 @@ public class GuardianRequest {
 
     private String seniorEmail;
     private List<String> interests;
+    private List<Long> interestIds;
 
     public GuardianDTO toServiceDto(){
         return GuardianDTO.of(nickName, password, name, address, phone, email, gender, birth, seniorNickName);
@@ -46,5 +47,8 @@ public class GuardianRequest {
     }
     public InterestDTO toInterestServiceDto(){
         return InterestDTO.of(interests);
+    }
+    public InterestDTO toInterestIdServiceDto(){
+        return InterestDTO.idOf(interestIds);
     }
 }

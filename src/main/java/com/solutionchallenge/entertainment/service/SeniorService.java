@@ -27,7 +27,8 @@ public class SeniorService {
         getSenior.saveProfilUrl(profileUrl);
         Senior savedSenior = seniorRepository.save(getSenior);
         //관심사 등록
-        interestService.create(savedSenior, interestDTO.getContents());
+//        interestService.create(savedSenior, interestDTO.getContents());
+        interestService.setRelation(savedSenior, interestDTO.getInterestIds());
 
     }
     public Senior gurdianInputSenior(SeniorDTO seniorDTO){

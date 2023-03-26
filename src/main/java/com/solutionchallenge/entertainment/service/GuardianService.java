@@ -28,6 +28,7 @@ public class GuardianService {
 //        seniorDTO.SeniorNickEqualsGuardian(guardianDTO.getNickName());
         Senior getSenior = setSenior(guardianDTO.getSeniorNickname(), seniorDTO);
         interestService.create(getSenior,interestDTO.getContents());
+        interestService.setRelation(getSenior,interestDTO.getInterestIds());
         Guardian guardian = Guardian.newInstance(guardianDTO, getSenior);
 //        String imageUrl = imageHandler.pareseFileInfo(profilImage, guardianDTO.getNickName());
         String imageUrl = firebaseService.uploadFiles(profilImage);
