@@ -1,5 +1,6 @@
 package com.solutionchallenge.entertainment.service;
 
+import com.solutionchallenge.entertainment.controller.dto.response.InterestToTensorResponse;
 import com.solutionchallenge.entertainment.domain.interest.Interest;
 import com.solutionchallenge.entertainment.domain.interest.InterestRepository;
 import com.solutionchallenge.entertainment.domain.senior.Senior;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -50,5 +52,12 @@ public class InterestService {
     Interest findById(Long interestId){
         return interestRepository.findById(interestId).orElseThrow(() -> new IllegalArgumentException("잘된된 input"));
     }
-
+    public InterestToTensorResponse requestTensor(Long seniorId, List<Long> interestIds){
+        int[] strInterests = {0,0,0,0,0,0,0,0,0,0};
+        for(Long interestId:interestIds){
+            int idToInteger = interestId.intValue();
+            strInterests[idToInteger] = 1;
+        }
+        return InterestToTensorResponse.of(seniorId, strInterests);
+    }
 }

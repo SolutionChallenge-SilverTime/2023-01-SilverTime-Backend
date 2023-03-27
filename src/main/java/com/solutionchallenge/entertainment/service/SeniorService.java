@@ -29,7 +29,6 @@ public class SeniorService {
         //관심사 등록
 //        interestService.create(savedSenior, interestDTO.getContents());
         interestService.setRelation(savedSenior, interestDTO.getInterestIds());
-
     }
     public Senior gurdianInputSenior(SeniorDTO seniorDTO){
         validateEmailDuplicate(seniorDTO.getEmail());
