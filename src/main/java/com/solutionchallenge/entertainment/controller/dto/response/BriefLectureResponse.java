@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BriefLectureResponse {
-
+    private Long lectureId;
     private String imageUrl;
     private String title;
     private String activityTime;
@@ -29,6 +29,7 @@ public class BriefLectureResponse {
 
     public static BriefLectureResponse getNewInstance(Lecture lecture, double distance){
         return BriefLectureResponse.builder()
+                .lectureId(lecture.getLectureId())
                 .imageUrl(lecture.getRepresentImageUrl())
                 .title(lecture.getTitle())
                 .activityTime(lecture.getActivityTime())
