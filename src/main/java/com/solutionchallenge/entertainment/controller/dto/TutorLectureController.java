@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/tutor-lecture")
+@CrossOrigin("*")
 public class TutorLectureController {
 
     private final TutorLectureService tutorLectureService;

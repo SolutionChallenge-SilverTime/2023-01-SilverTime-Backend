@@ -20,6 +20,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/auth/gurdian")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class GuardianController {
     private final GuardianService guardianService;
     private final FirebaseService firebaseService;

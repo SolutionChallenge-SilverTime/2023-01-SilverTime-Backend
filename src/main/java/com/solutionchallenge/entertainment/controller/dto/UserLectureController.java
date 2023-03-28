@@ -15,6 +15,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user-lecture")
+@CrossOrigin("*")
 public class UserLectureController {
 
     private final UserLectureService userLectureService;

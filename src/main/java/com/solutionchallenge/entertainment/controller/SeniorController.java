@@ -6,10 +6,7 @@ import com.solutionchallenge.entertainment.service.SeniorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -17,6 +14,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/auth/senior")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class SeniorController {
     private final SeniorService seniorService;
     private final ImageHandler imageHandler;
