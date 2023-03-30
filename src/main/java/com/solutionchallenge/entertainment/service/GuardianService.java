@@ -64,6 +64,6 @@ public class GuardianService {
         Guardian guardian = gurdianRepository.findByNickNameAndPassword(guardianDTO.getNickName(), guardianDTO.getPassword())
                 .orElseThrow(() -> new IllegalArgumentException("틀린 로그인 정보입니다"));
 
-        return UserResponse.of(guardian.getNickName(), guardian.getPassword(), guardian.getGuardianId());
+        return UserResponse.tutorOf(guardian.getNickName(), guardian.getPassword(), guardian.getGuardianId());
     }
 }

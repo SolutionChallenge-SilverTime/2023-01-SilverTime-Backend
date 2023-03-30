@@ -14,9 +14,8 @@ import com.solutionchallenge.entertainment.domain.lecture.Lecture;
 import com.solutionchallenge.entertainment.domain.lecture.LectureRepository;
 import com.solutionchallenge.entertainment.domain.likeLecture.LikeLecture;
 import com.solutionchallenge.entertainment.domain.likeLecture.LikeLectureRespository;
-import com.solutionchallenge.entertainment.domain.registration.Registration;
 import com.solutionchallenge.entertainment.domain.registration.RegistrationRepository;
-import com.solutionchallenge.entertainment.domain.review.ReivewRepository;
+import com.solutionchallenge.entertainment.domain.review.ReviewRepository;
 import com.solutionchallenge.entertainment.domain.review.Review;
 import com.solutionchallenge.entertainment.domain.senior.Senior;
 import com.solutionchallenge.entertainment.domain.senior.SeniorRepository;
@@ -26,10 +25,8 @@ import com.solutionchallenge.entertainment.service.dto.LectureDistance;
 import com.solutionchallenge.entertainment.service.dto.ReviewDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -47,7 +44,7 @@ public class UserLectureService {
     private final RegistrationRepository registrationRepository;
     private final InstroductionImagesRepository instroductionImagesRepository;
     private final CurriculumRepository curriculumRepository;
-    private final ReivewRepository reivewRepository;
+    private final ReviewRepository reviewRepository;
     private final LikeLectureRespository likeLectureRespository;
     private final CategoryRepository categoryRepository;
 
@@ -71,7 +68,7 @@ public class UserLectureService {
         Tutor tutor = registrationRepository.findByLecture(lecture).orElseThrow(()-> new IllegalArgumentException("Tutor doesn't exist")).getTutor();
         List<Curriculum> curriculums = curriculumRepository.findAllByLecture(lecture).orElseThrow(()-> new IllegalArgumentException("Curriculum doesn't exist"));
         List<InstroductionImages> introImages = instroductionImagesRepository.findAllByLecture(lecture).orElseThrow(()-> new IllegalArgumentException("Images doesn't exist"));
-        List<Review> reviews = reivewRepository.findAllByLecture(lecture)
+        List<Review> reviews = reviewRepository.findAllByLecture(lecture)
                                                 .orElseThrow(()-> new IllegalArgumentException("Review doesn't exist"))
                                                 .stream()
                                                 .sorted(Comparator.comparing(Review::getCreateDate).reversed())
@@ -182,7 +179,7 @@ public class UserLectureService {
 
         List<BriefLectureResponse> responses = new ArrayList<>();
         for(LectureDistance element : finalLecture){
-            responses.add(BriefLectureResponse.getNewInstance(element.getInputlecture(),Math.round(element.getDistance())));
+            responses.add(BriefLectureResponse.getNewInstance(element.getInputlecture(),Math.round(element.getDistance()*1000)));
         }
 
         return responses;
@@ -217,7 +214,8 @@ public class UserLectureService {
             List<LikeLecture> likeLectures = likeLectureRespository.findAllBySenior(senior).orElseThrow(()-> new IllegalArgumentException("UserId is wrong"));
             for(LikeLecture element : likeLectures){
                 double distance = calculateDistance(senior.getLatitude(),senior.getLongitude(),element.getLecture().getLatitude(),element.getLecture().getLongitude());
-                responses.add(BriefLectureResponse.getNewInstance(element.getLecture(),Math.round(distance)));
+                responses.add(BriefLectureResponse.getNewInstance(element.getLecture(),Math.round(distance)*1000
+                ));
             }
         }
         else{
@@ -225,13 +223,13 @@ public class UserLectureService {
             for(Apply element : applies){
                 double distance = calculateDistance(senior.getLatitude(),senior.getLongitude(),element.getLecture().getLatitude(),element.getLecture().getLongitude());
                 if(element.getState().equals("completed") && state.equals("completed")){
-                    responses.add(BriefLectureResponse.getNewInstance(element.getLecture(),Math.round(distance)));
+                    responses.add(BriefLectureResponse.getNewInstance(element.getLecture(),Math.round(distance)*1000));
                 }
                 else if(element.getState().equals("applied") && state.equals("applied")){
-                    responses.add(BriefLectureResponse.getNewInstance(element.getLecture(),Math.round(distance)));
+                    responses.add(BriefLectureResponse.getNewInstance(element.getLecture(),Math.round(distance)*1000));
                 }
                 else if(element.getState().equals("in-progress") && state.equals("in-progress")){
-                    responses.add(BriefLectureResponse.getNewInstance(element.getLecture(),Math.round(distance)));
+                    responses.add(BriefLectureResponse.getNewInstance(element.getLecture(),Math.round(distance)*1000));
                 }
             }
         }
@@ -254,6 +252,6 @@ public class UserLectureService {
         Senior senior = seniorRepository.findById(reviewDTO.getSeniorId()).orElseThrow(()-> new IllegalArgumentException("Senior doesn't exist"));
         Lecture lecture = lectureRepository.findById(reviewDTO.getLectureId()).orElseThrow(()-> new IllegalArgumentException("Lecture doesn't exist"));
 
-        reivewRepository.save(Review.getNewInstance(senior,lecture,reviewDTO.getContent(),reviewDTO.getScore()));
+        reviewRepository.save(Review.getNewInstance(senior,lecture,reviewDTO.getContent(),reviewDTO.getScore()));
     }
 }

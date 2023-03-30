@@ -22,13 +22,13 @@ public class SignificantController {
         significantService.create(significantRequest.toSeriveDto());
         return ResponseEntity.ok("send");
     }
-    @GetMapping("/tutorSendingList/{nickName}")
+    @GetMapping("/2/{nickName}")
     public ResponseEntity<?> turtorSendingList(@PathVariable String nickName) {
         List<SignificantResponse> significantResponse = significantService.tutorSendingList(nickName);
         return ResponseEntity.ok(significantResponse);
     }
 
-    @GetMapping("/guardianReceiveList/{nickName}")
+    @GetMapping("/1/{nickName}")
     public ResponseEntity<?> guardianReceiveList(@PathVariable String nickName) {
         List<SignificantResponse> significantResponses = significantService.guardianReceiveList(nickName);
         return ResponseEntity.ok(significantResponses);

@@ -74,6 +74,6 @@ public class SeniorService {
     public UserResponse signIn(SeniorDTO seniorDTO) {
         Senior senior = seniorRepository.findByNickNameAndPassword(seniorDTO.getNickName(), seniorDTO.getPassword())
                 .orElseThrow(()-> new IllegalArgumentException("로그인 정보가 틀렸습니다"));
-        return UserResponse.of(senior.getNickName(), senior.getPassword(), senior.getSeniorId());
+        return UserResponse.tutorOf(senior.getNickName(), senior.getPassword(), senior.getSeniorId());
     }
 }

@@ -1,7 +1,9 @@
 package com.solutionchallenge.entertainment.controller.dto.response;
 
-import com.solutionchallenge.entertainment.domain.senior.Senior;
+import com.solutionchallenge.entertainment.domain.tutor.Tutor;
 import lombok.*;
+
+import java.util.Date;
 
 @Builder
 @ToString
@@ -14,9 +16,33 @@ public class UserResponse {
     private Long userId;
     private int identity;
 
-    public static UserResponse of(String nickName,String password, Long userId) {
+    private String name;
+    private Date birth;
+    private String email;
+    private String gender;
+    private String address;
+    private String career;
+    private String phone;
+    private String introduction;
+    private String profileUrl;
+
+    public static UserResponse tutorOf(String nickName, String password, Long userId) {
         return UserResponse.builder().nickName(nickName).password(password).userId(userId).build();
 
+    }
+
+    public static UserResponse tutorOf(Tutor tutor) {
+        return UserResponse.builder()
+                .profileUrl(tutor.getProfileUrl())
+                .nickName(tutor.getNickName())
+                .password(tutor.getPassword())
+                .name(tutor.getName())
+                .birth(tutor.getBirth())
+                .email(tutor.getEmail())
+                .gender(tutor.getGender())
+                .phone(tutor.getPhoneNum())
+                .career(tutor.getCareer())
+                .introduction(tutor.getIntroduction()).build();
     }
 
     public void setIdentity(int identity) {

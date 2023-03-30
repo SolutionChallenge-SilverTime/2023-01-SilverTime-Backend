@@ -1,6 +1,7 @@
 package com.solutionchallenge.entertainment.controller;
 
 import com.solutionchallenge.entertainment.controller.dto.request.TutorRequest;
+import com.solutionchallenge.entertainment.controller.dto.response.UserResponse;
 import com.solutionchallenge.entertainment.service.TutorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -20,5 +21,10 @@ public class TutorController {
     public ResponseEntity<?> signUp(@Valid @RequestPart TutorRequest tutorRequest, @RequestPart MultipartFile profileImage) throws Exception{
         tutorService.signUp(tutorRequest.toServiceDto(), profileImage);
         return ResponseEntity.ok("signup complete");
+    }
+    @GetMapping("/mypage/{userId}")
+    public ResponseEntity<?> myPage(@PathVariable Long userId){
+        UserResponse userResponse = tutorService.getMypage(userId);
+        return ResponseEntity.ok(userResponse);
     }
 }

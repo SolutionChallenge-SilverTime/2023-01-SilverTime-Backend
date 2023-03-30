@@ -58,11 +58,18 @@ public class TutorService {
         return tutorRepository.findByNickName(nickName)
                 .orElseThrow(() -> new IllegalArgumentException(nickName + " 는 없는 닉네임입니다"));
     }
+    public Tutor findByTuturId(Long tutorId){
+        return tutorRepository.findById(tutorId).orElseThrow(()-> new IllegalArgumentException("없는 tutorId 입니다"));
+    }
 
     public UserResponse signIn(TutorDTO tutorDTO) {
         Tutor tutor = tutorRepository.findByNickNameAndPassword(tutorDTO.getNickName(), tutorDTO.getPassword())
                 .orElseThrow(() -> new IllegalArgumentException("로그인 정보가 틀렸습니다"));
-        return UserResponse.of(tutor.getNickName(), tutor.getPassword(), tutor.getTutorId());
+        return UserResponse.tutorOf(tutor.getNickName(), tutor.getPassword(), tutor.getTutorId());
     }
 
+    public UserResponse getMypage(Long userId) {
+        Tutor tutor = findByTuturId(userId);
+        return UserResponse.tutorOf(tutor);
+    }
 }
