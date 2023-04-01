@@ -12,4 +12,6 @@ public interface SignificantRepository extends JpaRepository<Significant,Long> {
 
     List<Significant> findByGuardian(Guardian guardian);
 
+    List<Significant> findByGuardianOrderByCreateDateDesc(Guardian guardian);
+
 }

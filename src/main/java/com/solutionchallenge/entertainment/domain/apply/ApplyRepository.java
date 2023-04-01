@@ -16,4 +16,6 @@ public interface ApplyRepository extends JpaRepository<Apply,Long> {
     Optional<List<Apply>> findAllBySenior(Senior senior);
 
     Optional<Apply> findBySeniorAndLecture(Senior senior, Lecture lecture);
+
+    List<Apply> findAllByLecture(Lecture lecture);
 }

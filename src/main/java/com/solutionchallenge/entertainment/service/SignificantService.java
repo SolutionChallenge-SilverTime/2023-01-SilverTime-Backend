@@ -38,7 +38,7 @@ public class SignificantService {
 
     public List<SignificantResponse> guardianReceiveList(String nickName) {
         Guardian guardian = guardianService.findByNickName(nickName);
-        List<Significant> significants = significantRepository.findByGuardian(guardian);
+        List<Significant> significants = significantRepository.findByGuardianOrderByCreateDateDesc(guardian);
         List<SignificantResponse> significantResponses = significants.stream().map(SignificantResponse::new).collect(Collectors.toList());
         return significantResponses;
     }

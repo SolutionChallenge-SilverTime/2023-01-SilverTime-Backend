@@ -20,7 +20,7 @@ public class UserLectureController {
 
     private final UserLectureService userLectureService;
 
-    @PostMapping("/apply")
+    @GetMapping("/apply")
     public ResponseEntity<?> applyLecture(@RequestParam Long userId, @RequestParam Long lectureId){
 
         userLectureService.applyLecture(userId, lectureId);

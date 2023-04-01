@@ -1,5 +1,6 @@
 package com.solutionchallenge.entertainment.controller.dto.response;
 
+import com.solutionchallenge.entertainment.domain.apply.Apply;
 import com.solutionchallenge.entertainment.domain.tutor.Tutor;
 import lombok.*;
 
@@ -25,6 +26,14 @@ public class UserResponse {
     private String phone;
     private String introduction;
     private String profileUrl;
+
+    public UserResponse(Apply apply) {
+        this.userId = apply.getSenior().getSeniorId();
+        this.name = apply.getSenior().getName();
+        this.birth = apply.getSenior().getBirth();
+        this.address = apply.getSenior().getAdress();
+        this.gender = apply.getSenior().getGender();
+    }
 
     public static UserResponse tutorOf(String nickName, String password, Long userId) {
         return UserResponse.builder().nickName(nickName).password(password).userId(userId).build();
